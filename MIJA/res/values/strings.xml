@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MIJA</string>
+    <string name="record">Aufnahme</string>
+    <string name="pause">Pause</string>
+    <string name="play">Wiedergabe</string>
+    <string name="stop">Stop</string>
+    <string name="article">Artikel</string>
+    <string name="settings">Einstellungen</string>
+    <string name="placeholderTitle">Titel</string>
+    <string name="stt_button">Speech To Text Button</string>
+    <string name="settingsLanguage">Sprache auswählen:</string>
+    <string name="german">Deutsch</string>
+    <string name="english">Englisch</string>
+
+</resources>

@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical" >
+
+    <!-- Screen Design for Record tab -->
+
+    <EditText
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/white"
+        android:ems="10"
+        android:text="@string/placeholderTitle"
+        android:textColor="@android:color/black"
+        android:textSize="20dip" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="32:00 min"
+        android:textColor="@android:color/black"
+        android:textSize="70dip" />
+
+    <ImageButton
+        android:id="@+id/stt_button"
+        android:layout_width="70dip"
+        android:layout_height="70dip"
+        android:layout_above="@+id/title"
+        android:background="@drawable/ic_stt"
+        android:onClick="startSttForTitle" />
+
+    <ProgressBar
+        android:id="@+id/recordVisualisation"
+        android:layout_width="70dip"
+        android:layout_height="70dip"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/stt_button"
+        android:layout_marginEnd="5dp" />
+
+</RelativeLayout>

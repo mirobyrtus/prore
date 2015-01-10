@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Record button -->
+    <item
+        android:id="@+id/record"
+        android:icon="@drawable/ic_record"
+        android:showAsAction="always"
+        android:title="@string/record"/>
+
+    <!-- Pause button -->
+    <item
+        android:id="@+id/pause"
+        android:icon="@drawable/ic_pause"
+        android:showAsAction="always"
+        android:title="@string/pause"/>
+
+    <!-- Play button -->
+    <item
+        android:id="@+id/play"
+        android:icon="@drawable/ic_play"
+        android:showAsAction="always"
+        android:title="@string/play"/>
+
+    <!-- Stop button -->
+    <item
+        android:id="@+id/stop"
+        android:icon="@drawable/ic_stop"
+        android:showAsAction="always"
+        android:title="@string/stop"/>
+
+</menu>

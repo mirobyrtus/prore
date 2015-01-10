@@ -1,0 +1,35 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+    actionBarTabBarStyle determines the style of the overall tab bar which contains the tab
+    actionBarTabStyle determines the style of the individual tab including the indicator
+    actionBarTabTextStyle determines the style of the tab text
+    -->
+
+    <style name="CustomActionBarTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/CustomActionBarTheme.ActionBar</item>
+        <item name="android:actionBarTabBarStyle">@style/CustomActionBarTheme.ActionBar.TabBar</item>
+        <item name="android:actionBarTabStyle">@style/CustomActionBarTheme.ActionBar.TabView</item>
+        <item name="android:actionBarTabTextStyle">@style/CustomActionBarTheme.ActionBar.TabText</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    
+    <style name="CustomActionBarTheme.ActionBar"
+           parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@android:color/holo_red_light</item>
+    </style>
+    
+    <style name="CustomActionBarTheme.ActionBar.TabBar" parent="android:style/Widget.Holo.Light.ActionBar.TabBar">
+        <item name="android:background">@android:color/holo_blue_bright</item>
+    </style>
+
+    <style name="CustomActionBarTheme.ActionBar.TabView" parent="android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:background">@drawable/actionbar_indicator</item>
+    </style>
+
+    <style name="CustomActionBarTheme.ActionBar.TabText" parent="android:style/Widget.Holo.ActionBar.TabText">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+</resources>
