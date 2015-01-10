@@ -61,7 +61,7 @@ public class Startscreen extends FragmentActivity {
 		/** --- settings tab --- */
 		Tab settingsTab = actionBar
 				.newTab()
-				.setText(R.string.settings)
+				.setIcon(R.drawable.ic_settings)
 				.setTabListener(
 						new FragmentTabListener<SettingsFragment>(this,
 								"settings", SettingsFragment.class));
