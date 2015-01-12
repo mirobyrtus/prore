@@ -15,18 +15,26 @@
         android:textColor="@android:color/white"
         android:textSize="18dip" />
 
-    <RadioButton
-        android:id="@+id/germanRadioButton"
+    <RadioGroup
+        android:id="@+id/radioLanguage"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dip"
-        android:text="@string/german" />
+        android:layout_height="wrap_content" >
 
-    <RadioButton
-        android:id="@+id/englishRadioButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dip"
-        android:text="@string/english" />
+        <RadioButton
+            android:id="@+id/germanRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:text="@string/german"
+            android:textColor="@android:color/white" />
+
+        <RadioButton
+            android:id="@+id/englishRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:text="@string/english"
+            android:textColor="@android:color/white" />
+    </RadioGroup>
 
 </LinearLayout>
