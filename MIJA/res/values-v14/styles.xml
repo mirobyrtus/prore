@@ -16,12 +16,14 @@
     <!-- ActionBar styles -->
     
     <style name="CustomActionBarTheme.ActionBar"
-           parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@android:color/holo_red_light</item>
+           parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#c0c0c0</item>
+        <item name="android:height">168px</item>
     </style>
     
     <style name="CustomActionBarTheme.ActionBar.TabBar" parent="android:style/Widget.Holo.Light.ActionBar.TabBar">
-        <item name="android:background">@android:color/holo_blue_bright</item>
+        <item name="android:background">@android:color/black</item>
+        <item name="android:height">91px</item>
     </style>
 
     <style name="CustomActionBarTheme.ActionBar.TabView" parent="android:style/Widget.Holo.ActionBar.TabView">

@@ -1,5 +1,8 @@
 <resources>
 
     <color name="black_overlay">#66000000</color>
+    <color name="tab_opened_gray">#8a71a6</color>
+    <color name="tab_closed_gray">#f5f4ea</color>
+    <color name="overall_background">#4a5357</color>
 
 </resources>

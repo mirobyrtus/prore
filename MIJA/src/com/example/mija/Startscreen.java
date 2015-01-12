@@ -2,6 +2,7 @@ package com.example.mija;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -23,12 +24,13 @@ public class Startscreen extends FragmentActivity {
 		// setup action bar for tabs
 		ActionBar actionBar = getActionBar();
 
-		// create actionbar tabs
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
 		// hide actionbar title and icon
 		actionBar.setDisplayShowTitleEnabled(false);
-		actionBar.setIcon(null);
+		actionBar.setDisplayUseLogoEnabled(false);
+		actionBar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+
+		// create actionbar tabs
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		/** --- record tab --- */
 		Tab recordTab = actionBar
@@ -98,18 +100,18 @@ public class Startscreen extends FragmentActivity {
 	}
 
 	public void record() {
-		//TODO: Add code
+		// TODO: Add code
 	};
 
 	public void pause() {
-		//TODO: Add code
+		// TODO: Add code
 	};
-	
+
 	public void play() {
-		//TODO: Add code
+		// TODO: Add code
 	};
 
 	public void stop() {
-		//TODO: Add code
+		// TODO: Add code
 	};
 }

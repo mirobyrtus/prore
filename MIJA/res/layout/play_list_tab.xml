@@ -2,8 +2,7 @@
     android:id="@+id/play_table"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="100dip"
-    android:background="@android:color/darker_gray"
+    android:background="@color/overall_background"
     android:orientation="vertical"
     android:stretchColumns="1" >
 

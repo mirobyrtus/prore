@@ -5,23 +5,29 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ProgressBar;
 
 public class RecordFragment extends Fragment {
 
+	private ProgressBar spinner;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.record_tab, container, false);
 
-		/**final Button sttButton = (Button) getView().findViewById(R.id.stt_button);
-		sttButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				// Perform action on click
-				//TODO
-			}
-		});*/
+		/**spinner = (ProgressBar) getView().findViewById(R.id.recordProgress);
+		spinner.setVisibility(View.GONE);*/
 
 		return rootView;
+	}
+	
+	public void startRecord(View view) {
+		spinner.setVisibility(View.VISIBLE);
+		//TODO
+	}
+	
+	public void startSttForTitle(View view) {
+		//TODO
 	}
 }
