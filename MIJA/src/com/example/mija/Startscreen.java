@@ -12,25 +12,35 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class Startscreen extends FragmentActivity {
 
 	/** Called when the activity is first created. */
 
+	// Audio
 	private MediaRecorder mRecorder = null;
 	private MediaPlayer   mPlayer = null;
 
+	// Flags
 	private boolean recording = false;
 	private boolean playing = false;
 
+	// Filestructure
 	private String mDirName = null;
 	private final static String mAudioSubdir = "mija_audio";
 	// private static String mFileName = null;
+	
+	// Time
+	private Handler timerHandler = new Handler();
+	long startTime = 0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -196,6 +206,8 @@ public class Startscreen extends FragmentActivity {
 
         mRecorder.start();
         
+        startTimer();
+        
         recording = true; 
     }
 
@@ -204,7 +216,18 @@ public class Startscreen extends FragmentActivity {
         mRecorder.release();
         mRecorder = null;
         
-        recording = false; 
+        stopTimer(); 
+        
+        recording = false;
+    }
+    
+    public void startTimer() {
+        startTime = SystemClock.uptimeMillis();
+        timerHandler.postDelayed(updateTimerMethod, 0);
+    }
+    
+    public void stopTimer() {
+    	timerHandler.removeCallbacks(updateTimerMethod);
     }
     
     /**
@@ -236,4 +259,22 @@ public class Startscreen extends FragmentActivity {
         
         playing = false; 
     }
+    
+    private Runnable updateTimerMethod = new Runnable() {
+
+    	public void run() {
+	    	long actualTime = SystemClock.uptimeMillis() - startTime;
+	    	
+	    	int milliseconds = (int) (actualTime % 1000);
+	    	int seconds = (int) (actualTime / 1000);
+	    	int minutes = seconds / 60;
+	    	seconds = seconds % 60;
+	    	
+	    	// TODO Show the time in the time counter
+	    	// e.g. Label.setText(minutes + ":" + seconds + "." + milliseconds);
+	    	
+	    	timerHandler.postDelayed(this, 0);
+    	}
+
+    };
 }
