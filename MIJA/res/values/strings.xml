@@ -17,4 +17,34 @@
     <string name="videorecording_button">Videoaufnahme</string>
     <string name="photograph_button">Fotoaufnahme</string>
 
+    <!-- miro -->
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="dot">.</string>
+    <string name="title_activity_sentence_list">SentenceList</string>
+    <string name="next_button_text">Next</string>
+    <string name="email_button">Share via Email</string>
+    <string name="process">Process</string>
+
+    <!-- Nuance -->
+    <string name="button_websearch">Websearch</string>
+    <string name="text_endPointer">Endpointer:</string>
+    <string name="radio_endPointerShort">Short</string>
+    <string name="radio_endPointerLong">Long</string>
+    <string name="radio_endPointerNone">None</string>
+    <string name="button_stop">Stop</string>
+    <string name="button_startTts">Get TTS</string>
+    <string name="button_startDictation">Dictate</string>
+    <string name="title_dictation">Test Dictation</string>
+    <string name="title_tts">Test TTS</string>
+    <string name="hello">Hello World, SampleVoiceApp!</string>
+    <string name="title_main">Choose a feature to test</string>
+    <string name="button_dictation">Dictation</string>
+    <string name="button_tts">TTS</string>
+    <string-array name="arr_ttsVoices">
+        <item>Samantha</item>
+        <item>Tom</item>
+    </string-array>
+    
+    
 </resources>
