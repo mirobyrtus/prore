@@ -1,25 +1,44 @@
 package com.example.mija;
 
+import helper.FileIterator;
+
+import java.io.File;
+import java.io.IOException;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 public class Startscreen extends FragmentActivity {
 
 	/** Called when the activity is first created. */
 
+	private MediaRecorder mRecorder = null;
+	private MediaPlayer   mPlayer = null;
+
+	private boolean recording = false;
+	private boolean playing = false;
+
+	private String mDirName = null;
+	private final static String mAudioSubdir = "mija_audio";
+	// private static String mFileName = null;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startscreen);
 		setUpTabs();		
+		setAudioDirName();
+		String aname = getNewAudioFileName();
 	}
 
 	private void setUpTabs() {
@@ -101,20 +120,121 @@ public class Startscreen extends FragmentActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	private void setAudioDirName() {
+		File externalStorageDirectory = Environment.getExternalStorageDirectory();
+		mDirName = externalStorageDirectory.getAbsolutePath() + "/" + mAudioSubdir;
+		File audioFolder = new File(mDirName);
+		if (! audioFolder.exists()) {
+		    if (! audioFolder.mkdir()) {
+		    	Log.e("AudioRecorder", "Cannot create new Directory!");	
+		    }
+		}
+	}
+	
+	private String getNewAudioFileName() {
+		File files[] = FileIterator.getFilesArray(mDirName);
+		return mDirName + "/audiorecordtest_" + files.length + ".3gp";
+	}
+	
+	private String getLatestAudioFileName() {
+		File files[] = FileIterator.getFilesArray(mDirName);
+		if (files.length == 0) {
+			return null; 
+		}
+		return files[files.length - 1].getAbsolutePath();
+	}
 
 	public void record() {
-		// TODO: Add code
+		if (! recording) {
+			startRecording();
+        } else {
+        	Log.e("AudioRecording", "Already recording!");
+        }
 	};
 
 	public void pause() {
-		// TODO: Add code
+		// stop() can be used since record() can be executed multiple times
+		// and will save input to multiple files anyway. 
+		// ! Only problem that while playing u cannot continue from that point - for prototype not needed
+		stop(); 
 	};
 
 	public void play() {
-		// TODO: Add code
+		if (! recording) {
+			startPlaying();
+		} else {
+			Log.e("AudioRecording", "Cannot play while recording!");
+		}
 	};
 
 	public void stop() {
-		// TODO: Add code
+		if (recording) {
+            stopRecording();
+        } else if (playing) {
+        	stopPlaying();
+        } else {
+        	Log.e("AudioRecording", "Nothing to stop!");
+        }
 	};
+	
+	/**
+	 * Recording region
+	 */
+	
+	private void startRecording() {
+        mRecorder = new MediaRecorder();
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setOutputFile(getNewAudioFileName());
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            mRecorder.prepare();
+        } catch (IOException e) {
+            Log.e("AudioRecording", "prepare() failed");
+        }
+
+        mRecorder.start();
+        
+        recording = true; 
+    }
+
+    private void stopRecording() {
+    	mRecorder.stop();
+        mRecorder.release();
+        mRecorder = null;
+        
+        recording = false; 
+    }
+    
+    /**
+     * Playing region
+     */
+	
+    private void startPlaying() {
+        mPlayer = new MediaPlayer();
+        try {
+        	String lastAudioName = getLatestAudioFileName();
+        	if (lastAudioName != null) {
+	            mPlayer.setDataSource(lastAudioName);
+	            mPlayer.prepare();
+	            mPlayer.start();
+        	} else {
+        		Log.e("AudioRecording", "Nothing to play!");
+        		return;
+        	}
+        } catch (IOException e) {
+            Log.e("AudioRecording", "prepare() failed");
+        }
+        
+        playing = true; 
+    }
+
+    private void stopPlaying() {
+        mPlayer.release();
+        mPlayer = null;
+        
+        playing = false; 
+    }
 }
