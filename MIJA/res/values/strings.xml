@@ -13,5 +13,8 @@
     <string name="settingsLanguage">Sprache auswählen:</string>
     <string name="german">Deutsch</string>
     <string name="english">Englisch</string>
+    <string name="audiorecording_button">Audioaufnahme</string>
+    <string name="videorecording_button">Videoaufnahme</string>
+    <string name="photograph_button">Fotoaufnahme</string>
 
 </resources>

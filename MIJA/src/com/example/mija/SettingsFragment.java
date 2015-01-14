@@ -1,15 +1,15 @@
 package com.example.mija;
 
+import java.util.Locale;
+
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 public class SettingsFragment extends Fragment {
 
@@ -22,6 +22,14 @@ public class SettingsFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.settings_tab, container,
 				false);
 
+		String languageToLoad  = "de"; // your language
+	    Locale locale = new Locale(languageToLoad); 
+	    Locale.setDefault(locale);
+	    Configuration config = new Configuration();
+	    config.locale = locale;
+	    //getBaseContext().getResources().updateConfiguration(config, 
+	    //  getBaseContext().getResources().getDisplayMetrics());
+	    
 		//addListenerOnButton();
 		return rootView;
 	}

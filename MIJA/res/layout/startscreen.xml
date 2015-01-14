@@ -2,8 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/overall_background"
+    android:background="@android:color/black"
     tools:context="com.example.mija.Startscreen" >
 
-</FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="250dip"
+            android:layout_height="250dip"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_logo" />
+
+    </RelativeLayout>
+
+</FrameLayout>

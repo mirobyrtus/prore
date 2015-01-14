@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/overall_background"
+    android:orientation="vertical" >
+
+    <!-- Screen Design for record tab -->
+
+    <ImageButton
+        android:id="@+id/audiorecording_button"
+        android:layout_width="110dip"
+        android:layout_height="110dip"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:background="@drawable/ic_audiorecording"
+        android:contentDescription="@string/audiorecording_button" />
+
+    <ImageButton
+        android:id="@+id/videorecording_button"
+        android:layout_width="110dip"
+        android:layout_height="110dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/photograph_button"
+        android:layout_marginLeft="25dp"
+        android:background="@drawable/ic_videorecording"
+        android:contentDescription="@string/videorecording_button" />
+
+    <ImageButton
+        android:id="@+id/photograph_button"
+        android:layout_width="110dip"
+        android:layout_height="110dip"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/audiorecording_button"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/ic_photograph"
+        android:contentDescription="@string/photograph_button" />
+
+</RelativeLayout>
