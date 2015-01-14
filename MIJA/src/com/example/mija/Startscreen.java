@@ -38,7 +38,6 @@ public class Startscreen extends FragmentActivity {
 		setContentView(R.layout.startscreen);
 		setUpTabs();		
 		setAudioDirName();
-		String aname = getNewAudioFileName();
 	}
 
 	private void setUpTabs() {
@@ -123,10 +122,10 @@ public class Startscreen extends FragmentActivity {
 	
 	private void setAudioDirName() {
 		File externalStorageDirectory = Environment.getExternalStorageDirectory();
-		mDirName = externalStorageDirectory.getAbsolutePath() + "/" + mAudioSubdir;
+		mDirName = externalStorageDirectory.getAbsolutePath() + "/" + mAudioSubdir + "/" + System.currentTimeMillis();
 		File audioFolder = new File(mDirName);
 		if (! audioFolder.exists()) {
-		    if (! audioFolder.mkdir()) {
+		    if (! audioFolder.mkdirs()) {
 		    	Log.e("AudioRecorder", "Cannot create new Directory!");	
 		    }
 		}
