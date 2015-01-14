@@ -9,8 +9,10 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -19,7 +21,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class Startscreen extends FragmentActivity {
 
@@ -236,12 +237,20 @@ public class Startscreen extends FragmentActivity {
 	
     private void startPlaying() {
         mPlayer = new MediaPlayer();
+        mPlayer.setOnCompletionListener(new OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+            	playing = false;
+            }
+        });
+        
         try {
         	String lastAudioName = getLatestAudioFileName();
         	if (lastAudioName != null) {
 	            mPlayer.setDataSource(lastAudioName);
 	            mPlayer.prepare();
 	            mPlayer.start();
+	            startCountDown(mPlayer.getDuration());
         	} else {
         		Log.e("AudioRecording", "Nothing to play!");
         		return;
@@ -260,8 +269,10 @@ public class Startscreen extends FragmentActivity {
         playing = false; 
     }
     
+    /**
+     * Timer for recording audio
+     */
     private Runnable updateTimerMethod = new Runnable() {
-
     	public void run() {
 	    	long actualTime = SystemClock.uptimeMillis() - startTime;
 	    	
@@ -275,6 +286,34 @@ public class Startscreen extends FragmentActivity {
 	    	
 	    	timerHandler.postDelayed(this, 0);
     	}
-
     };
+    
+    /** 
+     * Countdown for playing audio
+     */
+    private void startCountDown(int audioDurationMillisecond) {
+    	if (audioDurationMillisecond >= 0) {
+
+    		// 1000 means every second onTick()
+    		new CountDownTimer(audioDurationMillisecond, 1000) {
+	        	
+	        	public void onTick(long millisUntilFinished) {
+	    	    	int milliseconds = (int) (millisUntilFinished % 1000);
+	    	    	int seconds = (int) (millisUntilFinished / 1000);
+	    	    	int minutes = seconds / 60;
+	    	    	seconds = seconds % 60;
+	    	    	
+	    	    	// TODO Show the remaining time in the time countdown counter
+	    	    	// e.g. Label.setText(minutes + ":" + seconds + "." + milliseconds);
+	        	}
+	        	
+				@Override
+				public void onFinish() { }
+				
+	        }.start();
+    	} else {
+    		Log.e("AudioRecording", "Cannot start countdown");
+    	}
+    } 
+    
 }
