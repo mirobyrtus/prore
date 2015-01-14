@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class Startscreen extends FragmentActivity {
 
@@ -17,7 +19,7 @@ public class Startscreen extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startscreen);
-		setUpTabs();
+		setUpTabs();		
 	}
 
 	private void setUpTabs() {
@@ -27,7 +29,8 @@ public class Startscreen extends FragmentActivity {
 		// hide actionbar title and icon
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayUseLogoEnabled(false);
-		actionBar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+		actionBar.setIcon(new ColorDrawable(getResources().getColor(
+				android.R.color.transparent)));
 
 		// create actionbar tabs
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
