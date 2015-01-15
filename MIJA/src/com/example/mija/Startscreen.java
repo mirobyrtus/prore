@@ -36,8 +36,7 @@ public class Startscreen extends FragmentActivity {
 
 	// Filestructure
 	private String mDirName = null;
-	private final static String mAudioSubdir = "mija_audio";
-	// private static String mFileName = null;
+	public final static String mAudioSubdir = "mija_audio";
 	
 	// Time
 	private Handler timerHandler = new Handler();
@@ -200,7 +199,7 @@ public class Startscreen extends FragmentActivity {
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
-            mRecorder.prepare();
+            mRecorder.prepare(); // PrepareAsync?
         } catch (IOException e) {
             Log.e("AudioRecording", "prepare() failed");
         }
@@ -248,7 +247,7 @@ public class Startscreen extends FragmentActivity {
         	String lastAudioName = getLatestAudioFileName();
         	if (lastAudioName != null) {
 	            mPlayer.setDataSource(lastAudioName);
-	            mPlayer.prepare();
+	            mPlayer.prepare(); // PrepareAsync?
 	            mPlayer.start();
 	            startCountDown(mPlayer.getDuration());
         	} else {

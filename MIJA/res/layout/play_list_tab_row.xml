@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button
+        android:id="@+id/playItem"
+        android:layout_width="200dip"
+        android:layout_height="30dip"
+        android:background="@android:color/background_light"
+        android:onClick="openSinglePlayTab"
+        android:text="Titel 01"
+        android:textColor="@android:color/black" >
+    </Button>
+
+    <Button
+        android:id="@+id/playItem2"
+        android:layout_width="50dip"
+        android:layout_height="30dip"
+        android:background="@android:color/background_light"
+        android:gravity="right"
+        android:onClick="openSinglePlayTab"
+        android:text="04:43 min"
+        android:textColor="@android:color/black" >
+    </Button>
+
+</TableRow>

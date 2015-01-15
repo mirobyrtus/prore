@@ -14,4 +14,5 @@ public class FileIterator {
 	public static List<File> getFilesList(String absolutePath) {
 		return Arrays.asList(getFilesArray(absolutePath));
 	}
+	
 }

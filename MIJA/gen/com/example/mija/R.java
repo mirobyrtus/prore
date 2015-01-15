@@ -116,10 +116,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int mobile=0x7f03000b;
         public static final int nuance_main=0x7f03000c;
         public static final int play_list_tab=0x7f03000d;
-        public static final int play_tab=0x7f03000e;
-        public static final int record_tab=0x7f03000f;
-        public static final int settings_tab=0x7f030010;
-        public static final int startscreen=0x7f030011;
+        public static final int play_list_tab_row=0x7f03000e;
+        public static final int play_tab=0x7f03000f;
+        public static final int record_tab=0x7f030010;
+        public static final int settings_tab=0x7f030011;
+        public static final int startscreen=0x7f030012;
     }
     public static final class menu {
         public static final int buttons_bar=0x7f0a0000;
