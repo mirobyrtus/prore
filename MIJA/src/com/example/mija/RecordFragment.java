@@ -1,7 +1,14 @@
 package com.example.mija;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,5 +36,43 @@ public class RecordFragment extends Fragment {
 	
 	public void startSttForTitle(View view) {
 		//TODO
+	}
+	
+	/**
+	 * GoogleVoice Methods
+	 */
+	private final int RESPONSECODE = 100;
+
+	public void startRecognizing() {
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+		
+		// intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say something...");
+		
+		try {
+			startActivityForResult(intent, RESPONSECODE);
+		} catch (ActivityNotFoundException a) {
+			Log.e("SpeechRecognition", "Speech Recognition not availible on this device.");
+		}
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		switch (requestCode) {
+			case RESPONSECODE: {
+				// TODO RESULT_OK == -1, set it back to constant from Activity!
+				if (resultCode == -1 && data != null) {
+	
+					// Results here
+					ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+					
+				}
+				break;
+			}
+		}
 	}
 }
