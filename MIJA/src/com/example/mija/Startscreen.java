@@ -1,12 +1,17 @@
 package com.example.mija;
 
 import helper.FileIterator;
+import importantpoints.ImportantPointsHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -16,11 +21,15 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.speech.RecognizerIntent;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+import database.Database;
 
 public class Startscreen extends FragmentActivity {
 
@@ -42,12 +51,21 @@ public class Startscreen extends FragmentActivity {
 	private Handler timerHandler = new Handler();
 	long startTime = 0;
 	
+	// Important Points
+	ImportantPointsHandler importantPointsHandler = new ImportantPointsHandler();
+	
+	// Sentences & Parsers
+	// private ArrayAdapter<String> _arrayAdapter;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startscreen);
 		setUpTabs();
 		setAudioDirName();
+		
+		importantPointsHandler.reset();
+		
 	}
 
 	private void setUpTabs() {
@@ -151,15 +169,59 @@ public class Startscreen extends FragmentActivity {
 	
 	private String getLatestAudioFileName() {
 		File files[] = FileIterator.getFilesArray(mDirName);
-		if (files.length == 0) {
+		if (files == null || files.length == 0) {
 			return null; 
 		}
 		return files[files.length - 1].getAbsolutePath();
 	}
 
+	private final int RESPONSECODE = 100;
+	
+	public void startRecognizing() {
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		// intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "de-DE");
+		
+		// intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Recording...");
+		
+		try {
+			startActivityForResult(intent, RESPONSECODE);
+		} catch (ActivityNotFoundException a) {
+			Log.e("SpeechRecognition", "Speech Recognition not availible on this device.");
+		}
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		switch (requestCode) {
+			case RESPONSECODE: {
+				if (resultCode == RESULT_OK && data != null) {
+	
+					ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+					
+					if (results != null && results.size() > 0) {
+		            	// Hold article id 
+		            	Database.addSentenceToArticle(0, results);
+			        } else {
+			        	Log.e("SpeechRecognition", "Nothing was recognized!");
+			        }
+					
+				}
+				break;
+			}
+		}
+	}
+	
 	public void record() {
 		if (! recording) {
-			startRecording();
+			
+			// startRecording();
+			startRecognizing();
+			
         } else {
         	Log.e("AudioRecording", "Already recording!");
         }
@@ -173,6 +235,10 @@ public class Startscreen extends FragmentActivity {
 	};
 
 	public void play() {
+		
+		// TODO Since Buttons not working properly : 
+		record();
+		
 		if (! recording) {
 			startPlaying();
 		} else {
@@ -327,4 +393,12 @@ public class Startscreen extends FragmentActivity {
     	}
     } 
     
+    /**
+     * Important Points Handler
+     */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		importantPointsHandler.clicked(keyCode, event);
+		return super.onKeyDown(keyCode, event);
+	}
 }

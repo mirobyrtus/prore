@@ -2,6 +2,7 @@ package importantpoints;
 
 import java.util.ArrayList;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -19,9 +20,11 @@ public class ImportantPointsHandler {
 		start = System.currentTimeMillis();
 	}
 	
-	public void clicked(int keyCode, KeyEvent event) {
+	public void clicked(int keyCode, KeyEvent event) { // Context context - Send from Activity if u need 
 		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-			addTimestamp(); 
+			addTimestamp();
+			Log.i("ImportantPoint", "Important point captured!");
+			// Toast.makeText(context, "Important point captured", Toast.LENGTH_SHORT).show();			
 		}
 		if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
 			// TODO handle
