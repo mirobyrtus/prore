@@ -42,6 +42,8 @@ public class Startscreen extends FragmentActivity {
 	
 	// Important Points
 	ImportantPointsHandler importantPointsHandler = new ImportantPointsHandler();
+	long start_IP = 0;
+	String recording_IP = null;
 	
 	// Sentences & Parsers
 	// private ArrayAdapter<String> _arrayAdapter;
@@ -52,8 +54,6 @@ public class Startscreen extends FragmentActivity {
 		setContentView(R.layout.startscreen);
 		setUpTabs();
 		setAudioDirName();
-		
-		importantPointsHandler.reset();
 	}
 
 	private void setUpTabs() {
@@ -164,14 +164,21 @@ public class Startscreen extends FragmentActivity {
 	}
 
 	private final int RESPONSECODE = 100;
+	private String recognizedAudioPath;
 	
 	public void startRecognizingAndRecording() {
 		Intent intent = SpeechRecognitionHelper.prepareIntent();
+		
+		touchAudioDir();
+		
+		recognizedAudioPath = getNewAudioFileName();
         startTimer(); // TODO Missing output - refresh some label or what..
         
 		try {
 			startActivityForResult(intent, RESPONSECODE);
 			recording = true; 
+			start_IP = SystemClock.uptimeMillis();
+			recording_IP = recognizedAudioPath;
 		} catch (ActivityNotFoundException a) {
 			Log.e("SpeechRecognition", "Speech Recognition not availible on this device.");
 		}
@@ -187,13 +194,11 @@ public class Startscreen extends FragmentActivity {
 			case RESPONSECODE: {
 				if (resultCode == RESULT_OK && data != null) {
 	
-					touchAudioDir();
-					
 					// Process TEXT data
 					SpeechRecognitionHelper.processTextData(data, mDirName);
 					
 					// Process AUDIO data
-					SpeechRecognitionHelper.saveAudioData(data, getContentResolver(), getNewAudioFileName());
+					SpeechRecognitionHelper.saveAudioData(data, getContentResolver(), recognizedAudioPath);
 					
 				}
 				break;
@@ -254,7 +259,7 @@ public class Startscreen extends FragmentActivity {
      * Playing region
      */
     private void startPlaying() {
-        mPlayer = new MediaPlayer();
+    	mPlayer = new MediaPlayer();
         mPlayer.setOnCompletionListener(new OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -262,8 +267,8 @@ public class Startscreen extends FragmentActivity {
             }
         });
         
+        String lastAudioName = getLatestAudioFileName();
         try {
-        	String lastAudioName = getLatestAudioFileName();
         	if (lastAudioName != null) {
 	            mPlayer.setDataSource(lastAudioName);
 	            mPlayer.prepare(); // PrepareAsync?
@@ -277,7 +282,9 @@ public class Startscreen extends FragmentActivity {
             Log.e("AudioRecording", "prepare() failed");
         }
         
-        playing = true; 
+        playing = true;
+        start_IP = SystemClock.uptimeMillis();
+		recording_IP = lastAudioName;
     }
 
     private void stopPlaying() {
@@ -292,11 +299,11 @@ public class Startscreen extends FragmentActivity {
      */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		
-		// TODO Setup timestamp to calculate start 
-		// TODO Setup filename! 
-		
-		importantPointsHandler.clicked(keyCode, event);
+		if (recording || playing) {
+			importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP);
+		} else {
+			Log.e("CaptureImportantPoint", "Nothing to assign the important point to");
+		}
 		return super.onKeyDown(keyCode, event);
 	}
 }

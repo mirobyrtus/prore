@@ -34,9 +34,10 @@ public class MainView extends Activity {
         dictationButton.setOnClickListener(l);
     }
     
+    @Deprecated
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		importantPointsHandler.clicked(keyCode, event); 
+		// importantPointsHandler.clicked(keyCode, event); 
 		return super.onKeyDown(keyCode, event);
 	}
     

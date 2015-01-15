@@ -143,7 +143,8 @@ public class DictationView extends Activity
                     _currentRecognizer = _speechKit.createRecognizer(Recognizer.RecognizerType.Search, Recognizer.EndOfSpeechDetection.Short, locale, _listener, _handler);
                 _currentRecognizer.start();
                 
-                importantPointsHandler.reset();
+                // Old importantpoints
+                // importantPointsHandler.reset();
             }
         };
         dictationButton.setOnClickListener(startListener);
@@ -391,9 +392,10 @@ public class DictationView extends Activity
     /**
      * Important Points Handler
      */
+    @Deprecated
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		importantPointsHandler.clicked(keyCode, event); 
+		// importantPointsHandler.clicked(keyCode, event); 
 		return super.onKeyDown(keyCode, event);
 	}
 }
