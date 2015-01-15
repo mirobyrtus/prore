@@ -203,6 +203,13 @@ public class Startscreen extends FragmentActivity {
         mRecorder.setOutputFile(getNewAudioFileName());
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
+        // TODO create File before recording? 
+//        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyFolder/";
+//        File dir = new File(path);
+//        if (! dir.exists()) dir.mkdirs();
+//        String myfile = path + "googleaudiotest.3gp";
+        
+        
         try {
             mRecorder.prepare(); // PrepareAsync?
         } catch (IOException e) {
