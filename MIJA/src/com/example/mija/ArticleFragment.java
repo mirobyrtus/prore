@@ -89,7 +89,7 @@ public class ArticleFragment extends Fragment {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
 		i.putExtra(Intent.EXTRA_EMAIL  , new String[]{ "mirobyrtus@gmail.com" });
-		i.putExtra(Intent.EXTRA_SUBJECT, "Share Article");
+		i.putExtra(Intent.EXTRA_SUBJECT, "Share Article: " + "articleName"); // TODO copy articlename here after GUI adjusted
 		i.putExtra(Intent.EXTRA_TEXT   , article.toString());
 		try {
 		    startActivity(Intent.createChooser(i, "Send mail..."));

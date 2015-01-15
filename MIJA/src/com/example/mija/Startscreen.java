@@ -1,13 +1,13 @@
 package com.example.mija;
 
-import helper.FileIterator;
+import filehelper.FileIterator;
 import importantpoints.ImportantPointsHandler;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Locale;
 
+import speechrecognition.SpeechRecognitionHelper;
+import timers.TimerUtils;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.ActivityNotFoundException;
@@ -15,29 +15,22 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.SystemClock;
-import android.speech.RecognizerIntent;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
-import database.Database;
 
 public class Startscreen extends FragmentActivity {
 
 	/** Called when the activity is first created. */
 
 	// Audio
-	private MediaRecorder mRecorder = null;
-	private MediaPlayer   mPlayer = null;
+	private MediaPlayer mPlayer = null;
 
 	// Flags
 	private boolean recording = false;
@@ -46,10 +39,6 @@ public class Startscreen extends FragmentActivity {
 	// Filestructure
 	private String mDirName = null;
 	public final static String mAudioSubdir = "mija_audio";
-	
-	// Time
-	private Handler timerHandler = new Handler();
-	long startTime = 0;
 	
 	// Important Points
 	ImportantPointsHandler importantPointsHandler = new ImportantPointsHandler();
@@ -65,7 +54,6 @@ public class Startscreen extends FragmentActivity {
 		setAudioDirName();
 		
 		importantPointsHandler.reset();
-		
 	}
 
 	private void setUpTabs() {
@@ -164,7 +152,7 @@ public class Startscreen extends FragmentActivity {
 	
 	private String getNewAudioFileName() {
 		File files[] = FileIterator.getFilesArray(mDirName);
-		return mDirName + "/audiorecordtest_" + files.length + ".3gp";
+		return mDirName + "/record_" + files.length + ".amr";
 	}
 	
 	private String getLatestAudioFileName() {
@@ -177,17 +165,13 @@ public class Startscreen extends FragmentActivity {
 
 	private final int RESPONSECODE = 100;
 	
-	public void startRecognizing() {
-		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-		// intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "de-DE");
-		
-		// intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Recording...");
-		
+	public void startRecognizingAndRecording() {
+		Intent intent = SpeechRecognitionHelper.prepareIntent();
+        startTimer(); // TODO Missing output - refresh some label or what..
+        
 		try {
 			startActivityForResult(intent, RESPONSECODE);
+			recording = true; 
 		} catch (ActivityNotFoundException a) {
 			Log.e("SpeechRecognition", "Speech Recognition not availible on this device.");
 		}
@@ -197,18 +181,19 @@ public class Startscreen extends FragmentActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
+		recording = false; 
+
 		switch (requestCode) {
 			case RESPONSECODE: {
 				if (resultCode == RESULT_OK && data != null) {
 	
-					ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+					touchAudioDir();
 					
-					if (results != null && results.size() > 0) {
-		            	// Hold article id 
-		            	Database.addSentenceToArticle(0, results);
-			        } else {
-			        	Log.e("SpeechRecognition", "Nothing was recognized!");
-			        }
+					// Process TEXT data
+					SpeechRecognitionHelper.processTextData(data, mDirName);
+					
+					// Process AUDIO data
+					SpeechRecognitionHelper.saveAudioData(data, getContentResolver(), getNewAudioFileName());
 					
 				}
 				break;
@@ -218,10 +203,7 @@ public class Startscreen extends FragmentActivity {
 	
 	public void record() {
 		if (! recording) {
-			
-			// startRecording();
-			startRecognizing();
-			
+			startRecognizingAndRecording();
         } else {
         	Log.e("AudioRecording", "Already recording!");
         }
@@ -248,7 +230,7 @@ public class Startscreen extends FragmentActivity {
 
 	public void stop() {
 		if (recording) {
-            stopRecording();
+            // Not needed, handled by SpeechRecognition Intent
         } else if (playing) {
         	stopPlaying();
         } else {
@@ -258,60 +240,19 @@ public class Startscreen extends FragmentActivity {
 	
 	/**
 	 * Recording region
-	 */
-	
-	private void startRecording() {
-		touchAudioDir();
-		
-        mRecorder = new MediaRecorder();
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mRecorder.setOutputFile(getNewAudioFileName());
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        // TODO create File before recording? 
-//        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyFolder/";
-//        File dir = new File(path);
-//        if (! dir.exists()) dir.mkdirs();
-//        String myfile = path + "googleaudiotest.3gp";
-        
-        
-        try {
-            mRecorder.prepare(); // PrepareAsync?
-        } catch (IOException e) {
-            Log.e("AudioRecording", "prepare() failed");
-        }
-
-        mRecorder.start();
-        
-        startTimer();
-        
-        recording = true; 
-    }
-
-    private void stopRecording() {
-    	mRecorder.stop();
-        mRecorder.release();
-        mRecorder = null;
-        
-        stopTimer(); 
-        
-        recording = false;
-    }
-    
+	 */    
     public void startTimer() {
-        startTime = SystemClock.uptimeMillis();
-        timerHandler.postDelayed(updateTimerMethod, 0);
+        TimerUtils.setStartTime(SystemClock.uptimeMillis());
+        TimerUtils.startTimer(); 
     }
     
     public void stopTimer() {
-    	timerHandler.removeCallbacks(updateTimerMethod);
+    	TimerUtils.stopTimer();
     }
     
     /**
      * Playing region
      */
-	
     private void startPlaying() {
         mPlayer = new MediaPlayer();
         mPlayer.setOnCompletionListener(new OnCompletionListener() {
@@ -327,7 +268,7 @@ public class Startscreen extends FragmentActivity {
 	            mPlayer.setDataSource(lastAudioName);
 	            mPlayer.prepare(); // PrepareAsync?
 	            mPlayer.start();
-	            startCountDown(mPlayer.getDuration());
+	            TimerUtils.startCountDown(mPlayer.getDuration());
         	} else {
         		Log.e("AudioRecording", "Nothing to play!");
         		return;
@@ -347,57 +288,14 @@ public class Startscreen extends FragmentActivity {
     }
     
     /**
-     * Timer for recording audio
-     */
-    private Runnable updateTimerMethod = new Runnable() {
-    	public void run() {
-	    	long actualTime = SystemClock.uptimeMillis() - startTime;
-	    	
-	    	int milliseconds = (int) (actualTime % 1000);
-	    	int seconds = (int) (actualTime / 1000);
-	    	int minutes = seconds / 60;
-	    	seconds = seconds % 60;
-	    	
-	    	// TODO Show the time in the time counter
-	    	// e.g. Label.setText(minutes + ":" + seconds + "." + milliseconds);
-	    	
-	    	timerHandler.postDelayed(this, 0);
-    	}
-    };
-    
-    /** 
-     * Countdown for playing audio
-     */
-    private void startCountDown(int audioDurationMillisecond) {
-    	if (audioDurationMillisecond >= 0) {
-
-    		// 1000 means every second onTick()
-    		new CountDownTimer(audioDurationMillisecond, 1000) {
-	        	
-	        	public void onTick(long millisUntilFinished) {
-	    	    	int milliseconds = (int) (millisUntilFinished % 1000);
-	    	    	int seconds = (int) (millisUntilFinished / 1000);
-	    	    	int minutes = seconds / 60;
-	    	    	seconds = seconds % 60;
-	    	    	
-	    	    	// TODO Show the remaining time in the time countdown counter
-	    	    	// e.g. Label.setText(minutes + ":" + seconds + "." + milliseconds);
-	        	}
-	        	
-				@Override
-				public void onFinish() { }
-				
-	        }.start();
-    	} else {
-    		Log.e("AudioRecording", "Cannot start countdown");
-    	}
-    } 
-    
-    /**
      * Important Points Handler
      */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		// TODO Setup timestamp to calculate start 
+		// TODO Setup filename! 
+		
 		importantPointsHandler.clicked(keyCode, event);
 		return super.onKeyDown(keyCode, event);
 	}

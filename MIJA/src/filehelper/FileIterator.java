@@ -1,4 +1,4 @@
-package helper;
+package filehelper;
 
 import java.io.File;
 import java.io.IOException;

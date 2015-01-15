@@ -9,26 +9,33 @@ public class Database {
 	/**
 	 * Hold a database of Articles (For one run only!)
 	 */
-	public static ArrayList<Article> articleDatabase = new ArrayList<Article>();
+	public static ArrayList<Article> articles = new ArrayList<Article>();
 	
-	public static void createNewArticle() {
-		articleDatabase.add(new Article("Article-" + articleDatabase.size()));
+	public static Article createNewArticle(String path) {
+		Article newArticle = new Article("Article-" + articles.size(), path); 
+		articles.add(newArticle);
+		return newArticle; 
 	}
 	
-	public static void addSentenceToArticle(int articleId, ArrayList<String> alternativeSentences) {
-		if (articleDatabase.isEmpty()) {
-			createNewArticle();
-		} else if (articleId > articleDatabase.size()) {
-			Log.e("Database", "Index " + articleId + " out of bounds, nothing added to DB!");
-			return;
+	public static void addSentenceToArticle(String articlePath, ArrayList<String> alternativeSentences) {
+		Article article = null; 
+		for (Article a : articles) {
+			if (a.path.equals(articlePath)) {
+				article = a; 
+				break;
+			}
 		}
 		
-		articleDatabase.get(articleId).addNewSentence(alternativeSentences);	
+		if (article == null) {
+			article = createNewArticle(articlePath);
+		}
+		
+		article.addNewSentence(alternativeSentences);	
 	}
 	
 	public static Article getArticle(int id) {
-		if (id >= articleDatabase.size()) return null;
-		return articleDatabase.get(id);
+		if (id >= articles.size()) return null;
+		return articles.get(id);
 	}
 	
 }

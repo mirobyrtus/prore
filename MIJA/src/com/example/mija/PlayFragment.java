@@ -18,8 +18,7 @@ public class PlayFragment extends Fragment {
 				false);
 		
 		// Articles database - Crete the List like this 
-		// Sorry, but no duration information, just articleName
-		for (Article article : Database.articleDatabase) {
+		for (Article article : Database.articles) {
 			
 			System.out.println(" >> " + article.getName());
 			
