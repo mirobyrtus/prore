@@ -21,7 +21,7 @@ public class PlayFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, 
 			Bundle savedInstanceState) {
 		
-		View rootView = inflater.inflate(R.layout.play_list_tab_row, container, 
+		View rootView = inflater.inflate(R.layout.play_list_tab, container, 
 				false);
 		
 		String audioPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + Startscreen.mAudioSubdir;
@@ -52,6 +52,9 @@ public class PlayFragment extends Fragment {
 	    	// Pseudocode
 			// (R.id.playItem).setText(name);
 			// (R.id.playItem2).setText(minutes + ":" + seconds);
+	    	
+	    	// TODO - would be nice to send following data in the onClick method somehow..
+	    	// recording.getAbsolutePath();
 		}
 		
 		/**final Button openItemButton = (Button) getView().findViewById(
