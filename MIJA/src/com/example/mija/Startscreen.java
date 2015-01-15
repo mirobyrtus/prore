@@ -46,7 +46,7 @@ public class Startscreen extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startscreen);
-		setUpTabs();		
+		setUpTabs();
 		setAudioDirName();
 	}
 
@@ -133,6 +133,9 @@ public class Startscreen extends FragmentActivity {
 	private void setAudioDirName() {
 		File externalStorageDirectory = Environment.getExternalStorageDirectory();
 		mDirName = externalStorageDirectory.getAbsolutePath() + "/" + mAudioSubdir + "/" + System.currentTimeMillis();
+	}
+	
+	private void touchAudioDir() {
 		File audioFolder = new File(mDirName);
 		if (! audioFolder.exists()) {
 		    if (! audioFolder.mkdirs()) {
@@ -192,6 +195,8 @@ public class Startscreen extends FragmentActivity {
 	 */
 	
 	private void startRecording() {
+		touchAudioDir();
+		
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
