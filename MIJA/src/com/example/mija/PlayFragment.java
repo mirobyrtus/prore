@@ -17,7 +17,10 @@ public class PlayFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.play_list_tab, container, 
 				false);
 		
-		// Articles database - Crete the List like this 
+		// Articles database - Crete the List like this
+		// TODO recalculate duration (need load all the audio files and summarize the duration)
+		// - implemented in FileIterator.java (ich werds dann mal hier reinkoppieren, wenns mit dem 
+		// layout passt
 		for (Article article : Database.articles) {
 			
 			System.out.println(" >> " + article.getName());
