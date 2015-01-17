@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ScrollView;
 import database.Article;
 import database.Database;
 
@@ -14,8 +16,9 @@ public class PlayFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, 
 			Bundle savedInstanceState) {
 		
-		View rootView = inflater.inflate(R.layout.play_list_tab, container, 
-				false);
+		//View rootView = inflater.inflate(R.layout.play_list_tab, container, 
+		//		false);
+		ScrollView rootView = (ScrollView) inflater.inflate(R.layout.play_list_tab, container, false);
 		
 		// Articles database - Crete the List like this
 		// TODO recalculate duration (need load all the audio files and summarize the duration)
@@ -25,6 +28,8 @@ public class PlayFragment extends Fragment {
 			
 			System.out.println(" >> " + article.getName());
 			
+			((Button) ((ViewGroup) rootView.getChildAt(0)).getChildAt(0))
+			.setText(article.getName());
 		}
 		
 		/**final Button openItemButton = (Button) getView().findViewById(
@@ -56,5 +61,4 @@ public class PlayFragment extends Fragment {
 
 		return rootView;
 	}
-
 }

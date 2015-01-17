@@ -5,6 +5,44 @@
     android:background="@android:color/black"
     tools:context="com.example.mija.Startscreen" >
 
+    <!-- Button Bar -->
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray" >
+
+        <ImageButton
+            android:id="@+id/record_button"
+            android:layout_width="90dip"
+            android:layout_height="90dip"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/ic_record" />
+
+        <ImageButton
+            android:id="@+id/pause_button"
+            android:layout_width="90dip"
+            android:layout_height="90dip"
+            android:layout_marginLeft="95dip"
+            android:background="@drawable/ic_pause" />
+
+        <ImageButton
+            android:id="@+id/play_button"
+            android:layout_width="90dip"
+            android:layout_height="90dip"
+            android:layout_marginLeft="185dip"
+            android:background="@drawable/ic_play"
+            android:onClick="" />
+        
+        <ImageButton
+            android:id="@+id/stop_button"
+            android:layout_width="90dip"
+            android:layout_height="90dip"
+            android:layout_marginLeft="275dip"
+            android:background="@drawable/ic_stop" />
+    </RelativeLayout>
+    
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -13,8 +51,9 @@
             android:id="@+id/logo"
             android:layout_width="250dip"
             android:layout_height="250dip"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_marginBottom="54dp"
             android:src="@drawable/ic_logo" />
 
     </RelativeLayout>

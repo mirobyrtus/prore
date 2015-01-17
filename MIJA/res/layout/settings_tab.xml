@@ -1,29 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/overall_background"
     android:orientation="vertical" >
 
-    <!-- Screen Design for settings tab -->
+    <!-- Button Bar -->
 
-    <TextView
-        android:layout_width="fill_parent"
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dip"
-        android:text="@string/settingsLanguage"
-        android:textColor="@android:color/white"
-        android:textSize="18dip" />
+        android:background="@android:color/darker_gray" >
+
+        <ImageButton
+            android:id="@+id/record_button"
+            android:layout_width="90dip"
+            android:layout_height="90dip"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/ic_record" />
+
+        <ImageButton
+            android:id="@+id/pause_button"
+            android:layout_width="90dip"
+            android:layout_height="90dip"
+            android:layout_marginLeft="95dip"
+            android:background="@drawable/ic_pause" />
+
+        <ImageButton
+            android:id="@+id/play_button"
+            android:layout_width="90dip"
+            android:layout_height="90dip"
+            android:layout_marginLeft="185dip"
+            android:background="@drawable/ic_play"
+            android:onClick="" />
+
+        <ImageButton
+            android:id="@+id/stop_button"
+            android:layout_width="90dip"
+            android:layout_height="90dip"
+            android:layout_marginLeft="275dip"
+            android:background="@drawable/ic_stop" />
+    </RelativeLayout>
+
+    <!-- Screen Design for settings tab -->
 
     <RadioGroup
         android:id="@+id/radioLanguage"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1" >
 
         <RadioButton
             android:id="@+id/germanRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_marginStart="10dip"
             android:text="@string/german"
             android:textColor="@android:color/white" />
@@ -32,9 +66,24 @@
             android:id="@+id/englishRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/germanRadioButton"
+            android:layout_below="@+id/germanRadioButton"
             android:layout_marginStart="10dip"
+            android:layout_marginTop="20dp"
             android:text="@string/english"
             android:textColor="@android:color/white" />
     </RadioGroup>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_marginTop="48dp"
+        android:padding="15dip"
+        android:text="@string/settingsLanguage"
+        android:textColor="@android:color/white"
+        android:textSize="18dip" />
+
+</RelativeLayout>

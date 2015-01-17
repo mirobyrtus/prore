@@ -11,13 +11,13 @@
         <item name="android:actionBarTabBarStyle">@style/CustomActionBarTheme.ActionBar.TabBar</item>
         <item name="android:actionBarTabStyle">@style/CustomActionBarTheme.ActionBar.TabView</item>
         <item name="android:actionBarTabTextStyle">@style/CustomActionBarTheme.ActionBar.TabText</item>
+        <item name="android:windowActionBarOverlay">true</item>
     </style>
 
     <!-- ActionBar styles -->
     
     <style name="CustomActionBarTheme.ActionBar"
            parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">#c0c0c0</item>
         <item name="android:height">168px</item>
     </style>
     
