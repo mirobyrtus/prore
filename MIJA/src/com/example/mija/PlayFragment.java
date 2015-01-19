@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import database.Article;
-import database.Database;
+import android.widget.TextView;
 
 public class PlayFragment extends Fragment {
 
@@ -18,19 +18,28 @@ public class PlayFragment extends Fragment {
 		
 		//View rootView = inflater.inflate(R.layout.play_list_tab, container, 
 		//		false);
-		ScrollView rootView = (ScrollView) inflater.inflate(R.layout.play_list_tab, container, false);
+		RelativeLayout rootView = (RelativeLayout) inflater.inflate(R.layout.play_list_tab, container, false);
+		LinearLayout scrollLinearLayout = (LinearLayout) rootView.findViewById(R.id.playListScrollViewLinearLayout);
+		
+	    // 
+	    for (int i = 0; i < 3; i++) {
+	    	LinearLayout playItemLayout = (LinearLayout) inflater.inflate(R.layout.play_item, container, false);
+	    	TextView text = (TextView) playItemLayout.findViewById(R.id.playTextView);
+	    	text.setText(">>>" + i);
+	    	scrollLinearLayout.addView(playItemLayout);
+	    }
 		
 		// Articles database - Crete the List like this
 		// TODO recalculate duration (need load all the audio files and summarize the duration)
 		// - implemented in FileIterator.java (ich werds dann mal hier reinkoppieren, wenns mit dem 
 		// layout passt
-		for (Article article : Database.articles) {
-			
-			System.out.println(" >> " + article.getName());
-			
-			((Button) ((ViewGroup) rootView.getChildAt(0)).getChildAt(0))
-			.setText(article.getName());
-		}
+//		for (Article article : Database.articles) {
+//			
+//			System.out.println(" >> " + article.getName());
+//			
+//			((Button) ((ViewGroup) rootView.getChildAt(0)).getChildAt(0))
+//			.setText(article.getName());
+//		}
 		
 		/**final Button openItemButton = (Button) getView().findViewById(
 				R.id.playItem);
