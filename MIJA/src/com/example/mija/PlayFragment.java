@@ -52,9 +52,11 @@ public class PlayFragment extends Fragment {
 		
 		ArrayList<String> audioFragments = FileIterator.getLastRecording();
 		
-		playAudioIntent(audioFragments.get(0)); // Play one sentence
-		
-		// playAudioFragments(audioFragments); // Play whole article
+		if (! audioFragments.isEmpty()) {
+			playAudioIntent(audioFragments.get(0)); // Play one sentence
+
+			// playAudioFragments(audioFragments); // Play whole article
+		}
 		
 		/**final Button openItemButton = (Button) getView().findViewById(
 				R.id.playItem);
