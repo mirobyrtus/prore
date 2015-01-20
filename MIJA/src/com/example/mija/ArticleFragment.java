@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import database.Article;
 import database.Database;
 
@@ -24,6 +25,8 @@ public class ArticleFragment extends Fragment {
 
 		System.out.println();
 		ArrayList<Article> articles = Database.articles;
+		
+		Toast.makeText(getActivity(), articles.toString(), Toast.LENGTH_LONG).show();
 		
 		System.out.println(articles);
 		
