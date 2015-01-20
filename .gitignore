@@ -24,3 +24,5 @@ MIJA/bin/classes/stt/nuance/ListeningDialog.class
 MIJA/bin/classes.dex
 
 MIJA/bin/classes/adapters/WordsAdapter.class
+
+*.class
