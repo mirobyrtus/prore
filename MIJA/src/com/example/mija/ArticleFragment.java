@@ -2,6 +2,7 @@ package com.example.mija;
 
 import java.util.ArrayList;
 
+import parsers.SimpleSentence;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,41 +11,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.ListView;
+import android.widget.TextView;
 import database.Article;
-import database.Database;
+import dragndrop.DragNDropListView;
+import dragndrop.DynamicListView;
+import dragndrop.StableArrayAdapter;
 
 public class ArticleFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
 		//View rootView = inflater
 		//		.inflate(R.layout.article_tab, container, false);
+		
 		LinearLayout rootView = (LinearLayout) inflater.inflate(R.layout.article_tab, container, false);
-
+		
 		ArrayList<Article> articles = ((Startscreen)getActivity()).getDatabase().getArticles();
-		
-		Toast.makeText(getActivity(), articles.toString(), Toast.LENGTH_LONG).show();
-		
-		System.out.println(articles);
-		
-		// TODO Which Article was chosen?
-//		int articleId = 0;
-//		Article article = Database.getArticle(0);
-//		String articleName = article.getName();
-//
-//		for (ParsedSentence sentence : article.getSentences()) {
-//
-//			// TODO fill the GUI with this data + the articleName on the top of
-//			// articleBox
-//			System.out.println(" >> " + sentence);
-//
-//			((TextView) ((ViewGroup) rootView.getChildAt(0)).getChildAt(0))
-//					.setText(sentence.toString());
-//			((TextView) ((ViewGroup) rootView.getChildAt(0)).getChildAt(0))
-//			.setBackgroundColor(Color.parseColor("#ffcccc"));
-//		}
+		if (! articles.isEmpty()) { 
+			Article latestArticle = articles.get(articles.size() - 1);
+			
+			String title = latestArticle.getName();
+			ArrayList<SimpleSentence> simpleSentences = latestArticle.getSentences();
+			
+			// DragNDrop
+			ArrayList<String> sentences = new ArrayList<String>(); 
+			for (SimpleSentence ss : simpleSentences) {
+				sentences.add(ss.toString());
+			} 
+	
+	        StableArrayAdapter adapter = new StableArrayAdapter(getActivity(), R.layout.sentence, sentences);
+	        DynamicListView listView = (DynamicListView) rootView.findViewById(R.id.dragndroplistview);
+	
+	        listView.setCheeseList(sentences);
+	        listView.setAdapter(adapter);
+	        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		}
 
 		/**
 		 * final Button addButton = (Button) getView().findViewById(
@@ -70,6 +74,17 @@ public class ArticleFragment extends Fragment {
 		// Collect info
 		StringBuffer article = new StringBuffer();
 
+		dragndrop.DynamicListView dndview = (dragndrop.DynamicListView) v.findViewById(R.id.dragndroplistview);
+		for (int i = 0; i < dndview.getChildCount(); i++) {
+		    View view = dndview.getChildAt(i);
+		    
+		    if (view instanceof TextView) {
+		    	TextView textView = (TextView) view;
+		    	String sentence = textView.getText().toString().trim(); 
+    			article.append(sentence);
+		    }
+		}
+		
 		// TODO adjust the structure to the new GUI structure
 		/*
 		 * ListView listView = (ListView) v.findViewById(R.id.articleBrickView);

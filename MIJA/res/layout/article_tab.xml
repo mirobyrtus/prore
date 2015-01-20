@@ -44,11 +44,11 @@
     
     <!-- Screen Design for article tab -->
 
-    <com.example.mija.dragndrop.DragNDropListView
-        android:id="@+id/android:list"
-        android:layout_width="wrap_content"
-        android:layout_height="413dp" >
-    </com.example.mija.dragndrop.DragNDropListView>
+	<dragndrop.DynamicListView
+		android:id="@+id/dragndroplistview"
+		android:background="#0000"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:layout_width="match_parent"

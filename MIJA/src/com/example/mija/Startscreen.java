@@ -77,7 +77,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		
 		database = DatabaseSerializer.loadDatabase(this);
 		
-		// record();
+		record();
 		
 	}
 
