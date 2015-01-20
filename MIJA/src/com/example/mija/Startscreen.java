@@ -23,9 +23,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 
 public class Startscreen extends FragmentActivity {
 
@@ -35,8 +32,8 @@ public class Startscreen extends FragmentActivity {
 	private MediaPlayer mPlayer = null;
 
 	// Flags
-	private boolean recording = false;
-	private boolean playing = false;
+	public static boolean recording = false;
+	public static boolean playing = false;
 
 	// Filestructure
 	private String mDirName = null;
@@ -203,7 +200,7 @@ public class Startscreen extends FragmentActivity {
 
 		switch (requestCode) {
 			case PlayFragment.AUDIO_FINISHED_PLAYING: {
-				System.out.println();
+				playing = false;
 				break;
 			}
 			case RESPONSECODE: {

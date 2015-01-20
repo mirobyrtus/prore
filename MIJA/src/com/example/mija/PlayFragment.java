@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import speechrecognition.SpeechRecognitionHelper;
-
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -17,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import filehelper.FileIterator;
 
 public class PlayFragment extends Fragment {
@@ -95,11 +92,17 @@ public class PlayFragment extends Fragment {
 		Intent audioIntent = new Intent(Intent.ACTION_VIEW);
 		File file = new File(audioPath);
 		audioIntent.setDataAndType(Uri.fromFile(file), "audio/*");
+		
+		Startscreen.playing = true; 
+		
 		getActivity().startActivityForResult(Intent.createChooser(audioIntent, null), AUDIO_FINISHED_PLAYING);
 	}
 	
 	public void playAudioFragments(ArrayList<String> audioFragmentsPaths) {
-		if (audioFragmentsPaths.isEmpty()) return;
+		if (audioFragmentsPaths.isEmpty()) {
+			Startscreen.playing = false;
+			return;	
+		}
 		
 		MediaPlayer mPlayer = new MediaPlayer();
 		final ArrayList<String> stack = new ArrayList<String>(audioFragmentsPaths);
@@ -116,6 +119,9 @@ public class PlayFragment extends Fragment {
     	    mPlayer.setDataSource(audioFragmentsPaths.get(0));
     	    Log.i("PlayAudio", "Playing Audio " + audioFragmentsPaths.get(0));
             mPlayer.prepare(); // PrepareAsync?
+            
+            Startscreen.playing = true;
+    		
             mPlayer.start();        	
         } catch (IOException e) {
             Log.e("AudioRecording", "prepare() failed");
