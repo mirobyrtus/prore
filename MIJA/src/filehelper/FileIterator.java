@@ -27,6 +27,22 @@ public class FileIterator {
 		return Arrays.asList(files);
 	}
 	
+	public static ArrayList<String> getLastRecording() {
+		ArrayList<String> result = new ArrayList<String>();
+		
+		String audioPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + Startscreen.mAudioSubdir;
+		List<File> recordings = FileIterator.getFilesList(audioPath);
+		// For every record there is a directory with fragments (after every pause/stop new audio-fragment will be created)
+		File recordingDir = recordings.get(recordings.size() - 1); 
+		List<File> audioFragments = FileIterator.getFilesList(recordingDir.getAbsolutePath());
+		for (File audioFragment : audioFragments) {
+			result.add(audioFragment.getAbsolutePath());
+		}
+	
+		return result;
+	}
+
+	
 	public static void getRecordings() {
 		String audioPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + Startscreen.mAudioSubdir;
 		List<File> recordings = FileIterator.getFilesList(audioPath);

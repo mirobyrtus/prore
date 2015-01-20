@@ -1,18 +1,17 @@
 package com.example.mija;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import database.Article;
 import database.Database;
-import database.ParsedSentence;
 
 public class ArticleFragment extends Fragment {
 
@@ -21,24 +20,29 @@ public class ArticleFragment extends Fragment {
 			Bundle savedInstanceState) {
 		//View rootView = inflater
 		//		.inflate(R.layout.article_tab, container, false);
-		ScrollView rootView = (ScrollView) inflater.inflate(R.layout.article_tab, container, false);
+		LinearLayout rootView = (LinearLayout) inflater.inflate(R.layout.article_tab, container, false);
 
+		System.out.println();
+		ArrayList<Article> articles = Database.articles;
+		
+		System.out.println(articles);
+		
 		// TODO Which Article was chosen?
-		int articleId = 0;
-		Article article = Database.getArticle(0);
-		String articleName = article.getName();
-
-		for (ParsedSentence sentence : article.getSentences()) {
-
-			// TODO fill the GUI with this data + the articleName on the top of
-			// articleBox
-			System.out.println(" >> " + sentence);
-
-			((TextView) ((ViewGroup) rootView.getChildAt(0)).getChildAt(0))
-					.setText(sentence.toString());
-			((TextView) ((ViewGroup) rootView.getChildAt(0)).getChildAt(0))
-			.setBackgroundColor(Color.parseColor("#ffcccc"));
-		}
+//		int articleId = 0;
+//		Article article = Database.getArticle(0);
+//		String articleName = article.getName();
+//
+//		for (ParsedSentence sentence : article.getSentences()) {
+//
+//			// TODO fill the GUI with this data + the articleName on the top of
+//			// articleBox
+//			System.out.println(" >> " + sentence);
+//
+//			((TextView) ((ViewGroup) rootView.getChildAt(0)).getChildAt(0))
+//					.setText(sentence.toString());
+//			((TextView) ((ViewGroup) rootView.getChildAt(0)).getChildAt(0))
+//			.setBackgroundColor(Color.parseColor("#ffcccc"));
+//		}
 
 		/**
 		 * final Button addButton = (Button) getView().findViewById(

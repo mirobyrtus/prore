@@ -2,6 +2,8 @@ package database;
 
 import java.util.ArrayList;
 
+import parsers.SimpleSentence;
+
 public class Article {
 
 	private String name;
@@ -10,12 +12,13 @@ public class Article {
 	/**
 	 * Store List of sentences in one Article
 	 */
-	private ArrayList<ParsedSentence> sentences;
+	private ArrayList<SimpleSentence> sentences; // TODO back to ParsedSentence
 
 	public Article(String name, String path) {
 		this.name = name; 
 		this.path = path;
-		sentences = new ArrayList<ParsedSentence>();
+		//sentences = new ArrayList<ParsedSentence>();
+		sentences = new ArrayList<SimpleSentence>();
 	}
 	
 	public String getName() {
@@ -23,11 +26,17 @@ public class Article {
 	}
 	
 	public void addNewSentence(ArrayList<String> alternativeSentences) {
-		sentences.add(new ParsedSentence(alternativeSentences));
+		// sentences.add(new ParsedSentence(alternativeSentences));
+		sentences.add(new SimpleSentence(alternativeSentences));
 	} 
 	
-	public ArrayList<ParsedSentence> getSentences() {
+	public ArrayList<SimpleSentence> getSentences() {
 		return sentences;
+	}
+	
+	@Override
+	public String toString() {
+		return sentences.toString();
 	}
 	
 }

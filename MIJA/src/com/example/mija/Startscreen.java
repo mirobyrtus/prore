@@ -24,6 +24,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 public class Startscreen extends FragmentActivity {
 
@@ -54,6 +56,9 @@ public class Startscreen extends FragmentActivity {
 		setContentView(R.layout.startscreen);
 		setUpTabs();
 		setAudioDirName();
+		
+		record();
+		
 	}
 
 	private void setUpTabs() {
@@ -115,26 +120,28 @@ public class Startscreen extends FragmentActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-/*	@Override
+	/*
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
-		case R.id.record:
+		case R.id.record_button:
 			record();
 			return true;
-		case R.id.pause:
+		case R.id.pause_button:
 			pause();
 			return true;
-		case R.id.play:
+		case R.id.play_button:
 			play();
 			return true;
-		case R.id.stop:
+		case R.id.stop_button:
 			stop();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}*/
+	}
+	*/
 	
 	private void setAudioDirName() {
 		File externalStorageDirectory = Environment.getExternalStorageDirectory();
@@ -167,6 +174,8 @@ public class Startscreen extends FragmentActivity {
 	private String recognizedAudioPath;
 	
 	public void startRecognizingAndRecording() {
+		counter++; 
+		
 		Intent intent = SpeechRecognitionHelper.prepareIntent();
 		
 		touchAudioDir();
@@ -184,6 +193,8 @@ public class Startscreen extends FragmentActivity {
 		}
 	}
 	
+	private static int counter = 0; 
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -191,6 +202,10 @@ public class Startscreen extends FragmentActivity {
 		recording = false; 
 
 		switch (requestCode) {
+			case PlayFragment.AUDIO_FINISHED_PLAYING: {
+				System.out.println();
+				break;
+			}
 			case RESPONSECODE: {
 				if (resultCode == RESULT_OK && data != null) {
 	
@@ -203,6 +218,10 @@ public class Startscreen extends FragmentActivity {
 				}
 				break;
 			}
+		}
+		
+		if (counter < 2) { // 2 sentences
+			record();
 		}
 	}
 	
@@ -302,7 +321,7 @@ public class Startscreen extends FragmentActivity {
 		if (recording || playing) {
 			importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP);
 		} else {
-			Log.e("CaptureImportantPoint", "Nothing to assign the important point to");
+			// Log.e("CaptureImportantPoint", "Nothing to assign the important point to");
 		}
 		return super.onKeyDown(keyCode, event);
 	}
