@@ -40,15 +40,38 @@
             android:layout_height="90dip"
             android:layout_marginLeft="275dip"
             android:background="@drawable/ic_stop" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </RelativeLayout>
     
     <!-- Screen Design for article tab -->
 
-	<dragndrop.DynamicListView
-		android:id="@+id/dragndroplistview"
-		android:background="#0000"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:paddingLeft="10dp" >
+
+        <dragndrop.DynamicListView
+            android:id="@+id/dragndroplistview"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="#0000" >
+        </dragndrop.DynamicListView>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -70,7 +93,7 @@
             android:layout_width="60dip"
             android:layout_height="60dip"
             android:layout_marginLeft="70dip"
-            android:onClick="Add"
+            android:onClick="AddNewSentence"
             android:src="@drawable/ic_add" />
 
         <ImageButton
@@ -80,7 +103,7 @@
             android:layout_height="60dip"
             android:layout_alignParentRight="true"
             android:layout_marginRight="5dip"
-            android:onClick="DeleteBrick"
+            android:onClick="RemoveSentence"
             android:src="@drawable/ic_delete" />
     </RelativeLayout>
 

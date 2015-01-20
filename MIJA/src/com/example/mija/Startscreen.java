@@ -29,9 +29,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import database.Database;
 import database.DatabaseSerializer;
+import dragndrop.DynamicListView;
 import filehelper.FileIterator;
 
 public class Startscreen extends FragmentActivity implements OnClickListener {
@@ -369,6 +371,10 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		System.out.println();
 	}
 	
+	/** 
+	 * From PlayFragment
+	 */
+	
 	public void playArticle(View v) {
 		Button button = (Button) v;
 		String directory = button.getContentDescription().toString() + "/";
@@ -423,4 +429,52 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 
 	}
 
+	/**
+	 * From ArticleFragment
+	 */
+	
+	DynamicListView listView;
+
+	public void RemoveSentence(View v) {
+		listView.removeViewAt(0);
+	}
+	
+	public void AddNewSentence(View v) {
+		// TODO 
+	}
+	
+	public void OnShareViaEmail(View v) {
+		// Collect info
+		StringBuffer article = new StringBuffer();
+
+		dragndrop.DynamicListView dndview = (dragndrop.DynamicListView) v.findViewById(R.id.dragndroplistview);
+		for (int i = 0; i < dndview.getChildCount(); i++) {
+		    View view = dndview.getChildAt(i);
+		    
+		    if (view instanceof TextView) {
+		    	TextView textView = (TextView) view;
+		    	String sentence = textView.getText().toString().trim(); 
+    			article.append(sentence);
+		    }
+		}
+		
+		Intent i = new Intent(Intent.ACTION_SEND);
+		i.setType("message/rfc822");
+		i.putExtra(Intent.EXTRA_EMAIL, new String[] { "mirobyrtus@gmail.com" });
+		i.putExtra(Intent.EXTRA_SUBJECT, "Share Article: " + "articleName"); // TODO
+																				// copy
+																				// articlename
+																				// here
+																				// after
+																				// GUI
+																				// adjusted
+		i.putExtra(Intent.EXTRA_TEXT, article.toString());
+		try {
+			startActivity(Intent.createChooser(i, "Send mail..."));
+		} catch (android.content.ActivityNotFoundException ex) {
+			Log.e("Email Service", "There are no email clients installed.");
+		}
+	}
+
+	
 }
