@@ -1,2 +1,26 @@
 
 *.class
+
+*.class
+
+*.class
+
+MIJA/gen/com/example/mija/R.java
+
+MIJA/bin/resources.ap_
+
+MIJA/bin/MIJA.apk
+
+MIJA/bin/dexedLibs/nmdp_speech_kit-e071728782caafe0c78a5c289e80b23b.jar
+
+MIJA/bin/dexedLibs/android-support-v4-ee75382a86e8e7cbfa1a645313235785.jar
+
+MIJA/bin/classes/stt/nuance/MainView.class
+
+MIJA/bin/classes/stt/nuance/DictationView$3$1.class
+
+MIJA/bin/classes/stt/nuance/ListeningDialog.class
+
+MIJA/bin/classes.dex
+
+MIJA/bin/classes/adapters/WordsAdapter.class
