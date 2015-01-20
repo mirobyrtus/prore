@@ -2,16 +2,17 @@ package importantpoints;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 public class ImportantPointsHandler {
 
 	// File -> importantPoints
 	private static HashMap<String, ArrayList<Long>> importantPoints = new HashMap<String, ArrayList<Long>>(); 
-	private static ArrayList<Integer> importantSentenceIds = new ArrayList<Integer>();
+	private static Set<Integer> importantSentenceIds = new HashSet<Integer>();
 	
 	public void clicked(int keyCode, KeyEvent event, long millis, String audioPath, int counter) { // Context context - Send from Activity if u need 
 		clicked(keyCode, event, millis, audioPath);
