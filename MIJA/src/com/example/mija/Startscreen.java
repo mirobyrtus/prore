@@ -344,7 +344,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (recording || playing) {
-			importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP);
+			importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP, counter);
 			Toast.makeText(this, "Important Point Captured", Toast.LENGTH_SHORT).show();
 		} else {
 			// Log.e("CaptureImportantPoint", "Nothing to assign the important point to");
@@ -435,6 +435,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	
 	DynamicListView listView;
 
+	// TODO METHOD NOT FOUND!
 	public void RemoveSentence(View v) {
 		listView.removeViewAt(0);
 	}

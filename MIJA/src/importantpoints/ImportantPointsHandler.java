@@ -11,7 +11,13 @@ public class ImportantPointsHandler {
 
 	// File -> importantPoints
 	private static HashMap<String, ArrayList<Long>> importantPoints = new HashMap<String, ArrayList<Long>>(); 
+	private static ArrayList<Integer> importantSentenceIds = new ArrayList<Integer>();
 	
+	public void clicked(int keyCode, KeyEvent event, long millis, String audioPath, int counter) { // Context context - Send from Activity if u need 
+		clicked(keyCode, event, millis, audioPath);
+		importantSentenceIds.add(counter);
+	}
+
 	public void clicked(int keyCode, KeyEvent event, long millis, String audioPath) { // Context context - Send from Activity if u need 
 		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
 			addTimestampForFile(audioPath, millis);
