@@ -18,7 +18,9 @@
             android:layout_width="90dip"
             android:layout_height="90dip"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/ic_record" />
+            android:background="@drawable/ic_record" 
+            android:onClick="onRecordClicked"
+            />
 
         <ImageButton
             android:id="@+id/pause_button"
@@ -73,6 +75,7 @@
         android:layout_below="@+id/relativeLayout1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="111dp"
+        android:onClick="OnMicroClick"
         android:background="@drawable/ic_audiorecording"
         android:contentDescription="@string/audiorecording_button" />
 

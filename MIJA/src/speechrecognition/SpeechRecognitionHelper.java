@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import com.example.mija.Startscreen;
+
 import database.Database;
 
 import android.content.ContentResolver;
@@ -38,11 +40,11 @@ public class SpeechRecognitionHelper {
 
 	}
 	
-	public static void processTextData(Intent data, String articlePath) {
+	public static void processTextData(Database database, Intent data, String articlePath) {
 		ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 		
 		if (results != null && results.size() > 0) {
-        	Database.addSentenceToArticle(articlePath, results);
+        	database.addSentenceToArticle(articlePath, results);
         } else {
         	Log.e("SpeechRecognition", "Nothing was recognized!");
         }

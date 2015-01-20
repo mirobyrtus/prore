@@ -7,61 +7,61 @@
 
     <!-- Button Bar -->
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/darker_gray" >
+        android:orientation="vertical" >
 
-        <ImageButton
-            android:id="@+id/record_button"
-            android:layout_width="90dip"
-            android:layout_height="90dip"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/ic_record" />
-
-        <ImageButton
-            android:id="@+id/pause_button"
-            android:layout_width="90dip"
-            android:layout_height="90dip"
-            android:layout_marginLeft="95dip"
-            android:background="@drawable/ic_pause" />
-
-        <ImageButton
-            android:id="@+id/play_button"
-            android:layout_width="90dip"
-            android:layout_height="90dip"
-            android:layout_marginLeft="185dip"
-            android:background="@drawable/ic_play"
-            android:onClick="" />
-
-        <ImageButton
-            android:id="@+id/stop_button"
-            android:layout_width="90dip"
-            android:layout_height="90dip"
-            android:layout_marginLeft="275dip"
-            android:background="@drawable/ic_stop" />
-    </RelativeLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/playListScrollView" >
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" 
-            android:id="@+id/playListScrollViewLinearLayout" >
-            
-            <Button
-                android:id="@+id/playItem"
-                android:layout_width="200dip"
-                android:layout_height="30dip"
-                android:background="@android:color/background_light"
-                android:onClick="openSinglePlayTab"
-                android:textColor="@android:color/black" >
-            </Button>
-        </LinearLayout>
-    </ScrollView>
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray" >
+
+            <ImageButton
+                android:id="@+id/record_button"
+                android:layout_width="90dip"
+                android:layout_height="90dip"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/ic_record" />
+
+            <ImageButton
+                android:id="@+id/pause_button"
+                android:layout_width="90dip"
+                android:layout_height="90dip"
+                android:layout_marginLeft="95dip"
+                android:background="@drawable/ic_pause" />
+
+            <ImageButton
+                android:id="@+id/play_button"
+                android:layout_width="90dip"
+                android:layout_height="90dip"
+                android:layout_marginLeft="185dip"
+                android:background="@drawable/ic_play" />
+
+            <ImageButton
+                android:id="@+id/stop_button"
+                android:layout_width="90dip"
+                android:layout_height="90dip"
+                android:layout_marginLeft="275dip"
+                android:background="@drawable/ic_stop" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/playListScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="308dp" >
+
+            <LinearLayout
+                android:id="@+id/playListScrollViewLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical" >
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
 
 </RelativeLayout>

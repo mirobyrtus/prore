@@ -6,11 +6,20 @@
 
     <TextView
         android:id="@+id/playTextView"
+        android:layout_width="250dp"
+        android:layout_height="30dip"
+        android:background="@android:color/background_light"
+        android:text="Article XXX" 
+        android:textColor="@android:color/black" />
+    
+    <Button
+        android:id="@+id/playItem"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="@+id/DefaulText"
-        android:textAppearance="?android:attr/textAppearanceSmall"> 
-    </TextView>
+        android:layout_height="30dip"
+        android:background="@android:color/background_light"
+        android:onClick="playArticle"
+        android:text="Play!"
+        android:textColor="@android:color/black" />
+
 
 </LinearLayout>

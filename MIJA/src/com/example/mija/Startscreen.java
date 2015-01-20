@@ -1,6 +1,5 @@
 package com.example.mija;
 
-import filehelper.FileIterator;
 import importantpoints.ImportantPointsHandler;
 
 import java.io.File;
@@ -23,8 +22,15 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.widget.Toast;
+import database.Database;
+import database.DatabaseSerializer;
+import filehelper.FileIterator;
 
-public class Startscreen extends FragmentActivity {
+public class Startscreen extends FragmentActivity implements OnClickListener {
 
 	/** Called when the activity is first created. */
 
@@ -46,13 +52,25 @@ public class Startscreen extends FragmentActivity {
 	
 	// Sentences & Parsers
 	// private ArrayAdapter<String> _arrayAdapter;
+
+	// Database
+	private Database database = null; // = DatabaseSerializer.loadDatabase(this);
+	public Database getDatabase() {
+		return database;
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
 		setContentView(R.layout.startscreen);
+		
 		setUpTabs();
 		setAudioDirName();
+		
 		
 		// record();
 		
@@ -207,7 +225,7 @@ public class Startscreen extends FragmentActivity {
 				if (resultCode == RESULT_OK && data != null) {
 	
 					// Process TEXT data
-					SpeechRecognitionHelper.processTextData(data, mDirName);
+					SpeechRecognitionHelper.processTextData(database, data, mDirName);
 					
 					// Process AUDIO data
 					SpeechRecognitionHelper.saveAudioData(data, getContentResolver(), recognizedAudioPath);
@@ -317,9 +335,30 @@ public class Startscreen extends FragmentActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (recording || playing) {
 			importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP);
+			Toast.makeText(this, "Important Point Captured", Toast.LENGTH_SHORT).show();
 		} else {
 			// Log.e("CaptureImportantPoint", "Nothing to assign the important point to");
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		System.out.println();
+	}
+	
+	public void DeleteBrick(View v) {
+		System.out.println();
+	}
+	
+
+	public void OnMicroClick(View v) {
+		System.out.println();
+	}
+
+	public void onRecordClicked(View v) {
+		System.out.println();
+	}
+
 }

@@ -9,15 +9,19 @@ public class Database {
 	/**
 	 * Hold a database of Articles (For one run only!)
 	 */
-	public static ArrayList<Article> articles = new ArrayList<Article>();
+	public ArrayList<Article> articles = new ArrayList<Article>();
 	
-	public static Article createNewArticle(String path) {
+	public ArrayList<Article> getArticles() {
+		return articles;
+	}
+	
+	public Article createNewArticle(String path) {
 		Article newArticle = new Article("Article-" + articles.size(), path); 
 		articles.add(newArticle);
 		return newArticle; 
 	}
 	
-	public static void addSentenceToArticle(String articlePath, ArrayList<String> alternativeSentences) {
+	public void addSentenceToArticle(String articlePath, ArrayList<String> alternativeSentences) {
 		Article article = null; 
 		for (Article a : articles) {
 			if (a.path.equals(articlePath)) {
@@ -33,7 +37,7 @@ public class Database {
 		article.addNewSentence(alternativeSentences);	
 	}
 	
-	public static Article getArticle(int id) {
+	public Article getArticle(int id) {
 		if (id >= articles.size()) return null;
 		return articles.get(id);
 	}

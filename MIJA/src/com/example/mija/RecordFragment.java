@@ -11,10 +11,11 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-public class RecordFragment extends Fragment {
+public class RecordFragment extends Fragment implements OnClickListener {
 
 	private ProgressBar spinner;
 	
@@ -36,6 +37,10 @@ public class RecordFragment extends Fragment {
 	
 	public void startSttForTitle(View view) {
 		//TODO
+	}
+	
+	public void onRecordClicked(View v) {
+		System.out.println();
 	}
 	
 	/**
@@ -74,5 +79,11 @@ public class RecordFragment extends Fragment {
 				break;
 			}
 		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		System.out.println();
 	}
 }

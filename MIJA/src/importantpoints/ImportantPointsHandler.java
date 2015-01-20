@@ -21,6 +21,10 @@ public class ImportantPointsHandler {
 		if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
 			// TODO handle
 		}
+		
+		if (keyCode == KeyEvent.KEYCODE_ENTER) { // Remote Control small Button
+			addTimestampForFile(audioPath, millis);
+		}
 	}
 	
 	public void addTimestampForFile(String audioPath, long placeMillis) {

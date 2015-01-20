@@ -23,8 +23,7 @@ public class ArticleFragment extends Fragment {
 		//		.inflate(R.layout.article_tab, container, false);
 		LinearLayout rootView = (LinearLayout) inflater.inflate(R.layout.article_tab, container, false);
 
-		System.out.println();
-		ArrayList<Article> articles = Database.articles;
+		ArrayList<Article> articles = ((Startscreen)getActivity()).getDatabase().getArticles();
 		
 		Toast.makeText(getActivity(), articles.toString(), Toast.LENGTH_LONG).show();
 		
@@ -105,5 +104,5 @@ public class ArticleFragment extends Fragment {
 			Log.e("Email Service", "There are no email clients installed.");
 		}
 	}
-
+	
 }
