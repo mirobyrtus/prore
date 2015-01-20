@@ -54,7 +54,7 @@ public class Startscreen extends FragmentActivity {
 		setUpTabs();
 		setAudioDirName();
 		
-		record();
+		// record();
 		
 	}
 
