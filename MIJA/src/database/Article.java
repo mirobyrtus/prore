@@ -1,13 +1,16 @@
 package database;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import parsers.SimpleSentence;
 
-public class Article {
+public class Article implements Serializable {
+
+	private static final long serialVersionUID = 6960103713016751703L;
 
 	private String name;
-	String path; // For matching with the directory
+	private String path; // For matching with the directory
 	
 	/**
 	 * Store List of sentences in one Article
@@ -23,6 +26,10 @@ public class Article {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getPath() {
+		return path;
 	}
 	
 	public void addNewSentence(ArrayList<String> alternativeSentences) {

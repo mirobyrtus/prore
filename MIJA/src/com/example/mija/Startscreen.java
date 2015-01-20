@@ -4,6 +4,8 @@ import importantpoints.ImportantPointsHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import speechrecognition.SpeechRecognitionHelper;
 import timers.TimerUtils;
@@ -14,6 +16,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -25,6 +28,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 import database.Database;
 import database.DatabaseSerializer;
@@ -54,7 +58,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	// private ArrayAdapter<String> _arrayAdapter;
 
 	// Database
-	private Database database = null; // = DatabaseSerializer.loadDatabase(this);
+	private Database database;
 	public Database getDatabase() {
 		return database;
 	}
@@ -71,6 +75,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		setUpTabs();
 		setAudioDirName();
 		
+		database = DatabaseSerializer.loadDatabase(this);
 		
 		// record();
 		
@@ -217,7 +222,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		recording = false; 
 
 		switch (requestCode) {
-			case PlayFragment.AUDIO_FINISHED_PLAYING: {
+			case AUDIO_FINISHED_PLAYING: {
 				playing = false;
 				break;
 			}
@@ -226,6 +231,9 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	
 					// Process TEXT data
 					SpeechRecognitionHelper.processTextData(database, data, mDirName);
+					
+					// Save Database
+					DatabaseSerializer.saveDatabase(this, database);
 					
 					// Process AUDIO data
 					SpeechRecognitionHelper.saveAudioData(data, getContentResolver(), recognizedAudioPath);
@@ -359,6 +367,60 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 
 	public void onRecordClicked(View v) {
 		System.out.println();
+	}
+	
+	public void playArticle(View v) {
+		Button button = (Button) v;
+		String directory = button.getContentDescription().toString() + "/";
+		
+		List<File> audioFragments = FileIterator.getFilesList(directory);
+		if (! audioFragments.isEmpty()) {
+			playAudioIntent(audioFragments.get(0).getAbsolutePath()); // Play one sentence (With GUI)
+			// playAudioFragments(audioFragments); // Play whole article (WithOut GUI)
+		}
+	}
+	
+	public final static int AUDIO_FINISHED_PLAYING = 123;
+
+	public void playAudioIntent(String audioPath) {
+		Intent audioIntent = new Intent(Intent.ACTION_VIEW);
+		File file = new File(audioPath);
+		audioIntent.setDataAndType(Uri.fromFile(file), "audio/*");
+		
+		Startscreen.playing = true; 
+		
+		startActivityForResult(Intent.createChooser(audioIntent, null), AUDIO_FINISHED_PLAYING);
+	}
+	
+	public void playAudioFragments(ArrayList<File> audioFragmentsPaths) {
+		if (audioFragmentsPaths.isEmpty()) {
+			Startscreen.playing = false;
+			return;	
+		}
+		
+		MediaPlayer mPlayer = new MediaPlayer();
+		final ArrayList<File> stack = new ArrayList<File>(audioFragmentsPaths);
+		stack.remove(0);
+    	
+        mPlayer.setOnCompletionListener(new OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+            	playAudioFragments(stack);
+            }
+        });
+        
+        try {
+    	    mPlayer.setDataSource(audioFragmentsPaths.get(0).getAbsolutePath());
+    	    Log.i("PlayAudio", "Playing Audio " + audioFragmentsPaths.get(0));
+            mPlayer.prepare(); // PrepareAsync?
+            
+            Startscreen.playing = true;
+    		
+            mPlayer.start();        	
+        } catch (IOException e) {
+            Log.e("AudioRecording", "prepare() failed");
+        }
+
 	}
 
 }

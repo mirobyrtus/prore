@@ -1,11 +1,12 @@
 package database;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import android.util.Log;
+public class Database implements Serializable {
 
-public class Database {
-
+	private static final long serialVersionUID = 6266600293444189506L;
+	
 	/**
 	 * Hold a database of Articles (For one run only!)
 	 */
@@ -24,7 +25,7 @@ public class Database {
 	public void addSentenceToArticle(String articlePath, ArrayList<String> alternativeSentences) {
 		Article article = null; 
 		for (Article a : articles) {
-			if (a.path.equals(articlePath)) {
+			if (a.getPath().equals(articlePath)) {
 				article = a; 
 				break;
 			}

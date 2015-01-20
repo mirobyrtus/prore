@@ -1,8 +1,11 @@
 package parsers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SimpleSentence {
+public class SimpleSentence implements Serializable {
+
+	private static final long serialVersionUID = 5018689251633220645L;
 
 	public String sentence;
 	

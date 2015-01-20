@@ -7,38 +7,45 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import com.example.mija.Startscreen;
-
 import android.content.Context;
-import android.os.Environment;
 
 public class DatabaseSerializer {
 
 	private static final String databaseFileName = "database.ser";
-	private static final String databasePath = Environment
-			.getExternalStorageDirectory().getAbsolutePath()
-			+ "/"
-			+ Startscreen.mAudioSubdir + "/" + databaseFileName;
+	private static final String databasePath = databaseFileName;
+	
+//	private static final String databasePath = Environment
+//			.getExternalStorageDirectory().getAbsolutePath()
+//			+ "/"
+//			+ Startscreen.mAudioSubdir + "/" + databaseFileName;
 
 	public static Database loadDatabase(Context context) {
 		FileInputStream fis;
 		Database database = null; 
+		
 		try {
-			fis = context.openFileInput(databasePath);
-			ObjectInputStream is = new ObjectInputStream(fis);
-			database = (Database) is.readObject();
-			is.close();
-			fis.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+			context.openFileInput(databasePath);
+		} catch (FileNotFoundException fnfe) {
+			// Create new DB 
+			System.out.println("create new db");
+			database = new Database(); 
+			saveDatabase(context, database);
+		} 
 		
 		if (database == null) {
-			// TODO Init DB here !
+			try {
+				fis = context.openFileInput(databasePath);
+				ObjectInputStream is = new ObjectInputStream(fis);
+				database = (Database) is.readObject();
+				is.close();
+				fis.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return database;
