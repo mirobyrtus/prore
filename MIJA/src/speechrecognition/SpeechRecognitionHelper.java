@@ -22,9 +22,9 @@ public class SpeechRecognitionHelper {
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 		
 		// Setup language
-		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.GERMANY);
+		//intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+		//		RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		// intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.GERMANY);
 		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, Locale.GERMAN);
 
 		// Hidden Google Features
@@ -32,7 +32,7 @@ public class SpeechRecognitionHelper {
 		intent.putExtra("android.speech.extra.GET_AUDIO", true);
 
 		// Recording message
-		intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Recording...");
+		// intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Recording...");
 		
 		return intent;
 
