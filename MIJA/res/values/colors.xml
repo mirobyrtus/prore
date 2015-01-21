@@ -4,5 +4,7 @@
     <color name="tab_opened_gray">#8a71a6</color>
     <color name="tab_closed_gray">#f5f4ea</color>
     <color name="overall_background">#4a5357</color>
+    <color name="play_green">#009900</color>
+    <color name="record_stop_red">#cc0000</color>
 
 </resources>

@@ -23,28 +23,28 @@
                 android:layout_width="90dip"
                 android:layout_height="90dip"
                 android:layout_alignParentLeft="true"
-                android:background="@drawable/ic_record" />
+                android:background="@color/record_stop_red" />
 
             <ImageButton
                 android:id="@+id/pause_button"
                 android:layout_width="90dip"
                 android:layout_height="90dip"
-                android:layout_marginLeft="95dip"
+                android:layout_marginLeft="90dip"
                 android:background="@drawable/ic_pause" />
 
             <ImageButton
                 android:id="@+id/play_button"
                 android:layout_width="90dip"
                 android:layout_height="90dip"
-                android:layout_marginLeft="185dip"
-                android:background="@drawable/ic_play" />
+                android:layout_marginLeft="175dip"
+                android:background="@color/play_green" />
 
             <ImageButton
                 android:id="@+id/stop_button"
                 android:layout_width="90dip"
                 android:layout_height="90dip"
-                android:layout_marginLeft="275dip"
-                android:background="@drawable/ic_stop" />
+                android:layout_marginLeft="265dip"
+                android:background="@color/record_stop_red" />
         </RelativeLayout>
 
         <ScrollView
@@ -57,11 +57,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="vertical" >
-
-
             </LinearLayout>
         </ScrollView>
-
     </LinearLayout>
 
 </RelativeLayout>
