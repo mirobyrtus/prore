@@ -40,9 +40,7 @@ public class SpeechRecognitionHelper {
 
 	}
 	
-	public static void processTextData(Database database, Intent data, String articlePath) {
-		ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-		
+	public static void processTextData(Database database, ArrayList<String> results, String articlePath) {
 		if (results != null && results.size() > 0) {
         	database.addSentenceToArticle(articlePath, results);
         } else {

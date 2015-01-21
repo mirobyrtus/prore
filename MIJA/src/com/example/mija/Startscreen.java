@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.speech.RecognizerIntent;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -79,7 +80,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		
 		database = DatabaseSerializer.loadDatabase(this);
 		
-		record();
+		// record();
 		
 	}
 
@@ -196,8 +197,6 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	private String recognizedAudioPath;
 	
 	public void startRecognizingAndRecording() {
-		counter++; 
-		
 		Intent intent = SpeechRecognitionHelper.prepareIntent();
 		
 		touchAudioDir();
@@ -231,8 +230,13 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 			case RESPONSECODE: {
 				if (resultCode == RESULT_OK && data != null) {
 	
-					// Process TEXT data
-					SpeechRecognitionHelper.processTextData(database, data, mDirName);
+					ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+					if (results.isEmpty()) {
+						// Nothing recognized 
+						counter++;
+					}
+					
+					SpeechRecognitionHelper.processTextData(database, results, mDirName);
 					
 					// Save Database
 					DatabaseSerializer.saveDatabase(this, database);
@@ -240,6 +244,11 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 					// Process AUDIO data
 					SpeechRecognitionHelper.saveAudioData(data, getContentResolver(), recognizedAudioPath);
 					
+				} else if (resultCode == 0) {
+					// Failed or cancelled 
+					
+					// Nobody talks / wants to talk anymore?
+					counter += 2;
 				}
 				break;
 			}
@@ -347,6 +356,9 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 			importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP, counter);
 			Toast.makeText(this, "Important Point Captured", Toast.LENGTH_SHORT).show();
 		} else {
+			if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+				record();
+			}
 			// Log.e("CaptureImportantPoint", "Nothing to assign the important point to");
 		}
 		return super.onKeyDown(keyCode, event);
