@@ -52,7 +52,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp" >
+        android:layout_height="78dp" >
+
+        <EditText
+            android:id="@+id/articleTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Article Title Here"
+            android:background="@android:color/transparent"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
     </RelativeLayout>
 
     <RelativeLayout

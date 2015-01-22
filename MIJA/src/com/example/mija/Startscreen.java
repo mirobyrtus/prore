@@ -30,6 +30,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import database.Database;
@@ -250,13 +252,15 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 					// Nobody talks / wants to talk anymore?
 					counter += 2;
 				}
+				
+				if (counter < 2) { // 2 sentences
+					record();
+				}
+				
 				break;
 			}
 		}
 		
-		if (counter < 2) { // 2 sentences
-			record();
-		}
 	}
 	
 	public void record() {
@@ -275,10 +279,6 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	};
 
 	public void play() {
-		
-		// TODO Since Buttons not working properly : 
-		record();
-		
 		if (! recording) {
 			startPlaying();
 		} else {
@@ -356,9 +356,6 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 			importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP, counter);
 			Toast.makeText(this, "Important Point Captured", Toast.LENGTH_SHORT).show();
 		} else {
-			if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-				record();
-			}
 			// Log.e("CaptureImportantPoint", "Nothing to assign the important point to");
 		}
 		return super.onKeyDown(keyCode, event);
@@ -376,7 +373,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	
 
 	public void OnMicroClick(View v) {
-		System.out.println();
+		record();
 	}
 
 	public void onRecordClicked(View v) {
@@ -447,40 +444,49 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	
 	DynamicListView listView;
 
-	// TODO METHOD NOT FOUND!
 	public void RemoveSentence(View v) {
-		listView.removeViewAt(0);
+		
+		/*
+		listView.mCheeseList.remove(0);
+		listView.getAdapter().notifyAll();
+		listView.notifyAll();
+		listView.refreshDrawableState();
+		*/
+		
+		Toast.makeText(this, "TODO Remove First article", Toast.LENGTH_SHORT).show();
+		
 	}
 	
 	public void AddNewSentence(View v) {
-		// TODO 
+		
+		Toast.makeText(this, "TODO Add new Sentence", Toast.LENGTH_SHORT).show();
+		
 	}
 	
 	public void OnShareViaEmail(View v) {
+	
+		LinearLayout parent = (LinearLayout) v.getParent().getParent();
+		dragndrop.DynamicListView dndview = (dragndrop.DynamicListView) parent.findViewById(R.id.dragndroplistview);
+		
+		String articleName = ((EditText) parent.findViewById(R.id.articleTitle)).getText().toString();
+		
 		// Collect info
 		StringBuffer article = new StringBuffer();
 
-		dragndrop.DynamicListView dndview = (dragndrop.DynamicListView) v.findViewById(R.id.dragndroplistview);
 		for (int i = 0; i < dndview.getChildCount(); i++) {
 		    View view = dndview.getChildAt(i);
 		    
 		    if (view instanceof TextView) {
 		    	TextView textView = (TextView) view;
-		    	String sentence = textView.getText().toString().trim(); 
-    			article.append(sentence);
+		    	String sentence = textView.getText().toString().trim();
+    			article.append(sentence + ". \n");
 		    }
 		}
 		
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
-		i.putExtra(Intent.EXTRA_EMAIL, new String[] { "mirobyrtus@gmail.com" });
-		i.putExtra(Intent.EXTRA_SUBJECT, "Share Article: " + "articleName"); // TODO
-																				// copy
-																				// articlename
-																				// here
-																				// after
-																				// GUI
-																				// adjusted
+		// i.putExtra(Intent.EXTRA_EMAIL, new String[] { "recipient@domain.com" });
+		i.putExtra(Intent.EXTRA_SUBJECT, "Share Article: " + articleName);
 		i.putExtra(Intent.EXTRA_TEXT, article.toString());
 		try {
 			startActivity(Intent.createChooser(i, "Send mail..."));

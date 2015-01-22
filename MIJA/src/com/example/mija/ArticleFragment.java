@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import database.Article;
@@ -30,6 +31,9 @@ public class ArticleFragment extends Fragment {
 			Article latestArticle = articles.get(articles.size() - 1);
 			
 			String title = latestArticle.getName();
+			EditText articleTitle = (EditText) rootView.findViewById(R.id.articleTitle); 
+			articleTitle.setText(title);
+			
 			ArrayList<SimpleSentence> simpleSentences = latestArticle.getSentences();
 			
 			// DragNDrop
