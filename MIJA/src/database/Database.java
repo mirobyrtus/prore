@@ -17,7 +17,7 @@ public class Database implements Serializable {
 	}
 	
 	public Article createNewArticle(String path) {
-		Article newArticle = new Article("Article-" + articles.size(), path); 
+		Article newArticle = new Article("Title-" + articles.size(), path); 
 		articles.add(newArticle);
 		return newArticle; 
 	}
@@ -41,6 +41,10 @@ public class Database implements Serializable {
 	public Article getArticle(int id) {
 		if (id >= articles.size()) return null;
 		return articles.get(id);
+	}
+	
+	public int getActualArticleId() {
+		return articles.size();
 	}
 	
 }

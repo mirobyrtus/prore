@@ -47,10 +47,17 @@
                 android:background="@color/record_stop_red" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="10" >
+
+        </RelativeLayout>
+
         <ScrollView
             android:id="@+id/playListScrollView"
             android:layout_width="match_parent"
-            android:layout_height="308dp" >
+            android:layout_height="261dp" >
 
             <LinearLayout
                 android:id="@+id/playListScrollViewLinearLayout"

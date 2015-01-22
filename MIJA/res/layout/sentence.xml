@@ -12,7 +12,6 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,4 +20,5 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:textColor="#000000"
-/>
+    android:textSize="25sp" />
+

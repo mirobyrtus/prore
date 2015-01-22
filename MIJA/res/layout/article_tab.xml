@@ -52,7 +52,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="78dp" >
+        android:layout_height="78dp"
+        android:background="@android:color/white" >
 
         <EditText
             android:id="@+id/articleTitle"
@@ -60,28 +61,32 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="Article Title Here"
             android:background="@android:color/transparent"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:text="Article Title Here"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="372dp"
         android:paddingLeft="10dp" >
 
         <dragndrop.DynamicListView
             android:id="@+id/dragndroplistview"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
             android:background="#0000" >
+
         </dragndrop.DynamicListView>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
         android:background="@android:color/darker_gray" >
 
         <ImageButton

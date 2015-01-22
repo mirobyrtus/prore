@@ -11,17 +11,14 @@ import android.view.KeyEvent;
 public class ImportantPointsHandler {
 
 	// File -> importantPoints
-	private static HashMap<String, ArrayList<Long>> importantPoints = new HashMap<String, ArrayList<Long>>(); 
-	private static Set<Integer> importantSentenceIds = new HashSet<Integer>();
+	private static HashMap<String, ArrayList<Long>> importantPoints = new HashMap<String, ArrayList<Long>>();
+	// TODO 
+	public static Set<Integer> importantSentenceIds = new HashSet<Integer>();
 	
-	public void clicked(int keyCode, KeyEvent event, long millis, String audioPath, int counter) { // Context context - Send from Activity if u need 
-		clicked(keyCode, event, millis, audioPath);
-		importantSentenceIds.add(counter);
-	}
-
-	public void clicked(int keyCode, KeyEvent event, long millis, String audioPath) { // Context context - Send from Activity if u need 
+		public void clicked(int keyCode, KeyEvent event, long millis, String audioPath, int sentenceId) { // Context context - Send from Activity if u need 
 		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
 			addTimestampForFile(audioPath, millis);
+			importantSentenceIds.add(sentenceId);
 			Log.i("ImportantPoint", "Important point captured!");
 			// Toast.makeText(context, "Important point captured", Toast.LENGTH_SHORT).show();			
 		}
