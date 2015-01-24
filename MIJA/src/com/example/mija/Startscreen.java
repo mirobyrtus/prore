@@ -6,12 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import speechrecognition.SpeechRecognitionHelper;
 import timers.TimerUtils;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -19,6 +22,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.FragmentActivity;
@@ -26,9 +30,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -68,6 +74,10 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		return database;
 	}
 	
+	// Timer
+	private Timer myTimer;
+	boolean tabs_setup = false;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,17 +87,47 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		
 		setContentView(R.layout.startscreen);
 		
-		setUpTabs();
+		prepareScreen();
+		
+		// Setup tabs
+		myTimer = new Timer();
+	    myTimer.schedule(new TimerTask() {          
+	        @Override
+	        public void run() {
+	            TimerMethod();
+	        }
+
+	    }, 2000, 1);
+		
 		setAudioDirName();
 		
 		database = DatabaseSerializer.loadDatabase(this);
 		
 		// record();
-		
+	}
+	
+	private void TimerMethod()
+	{
+	    //This method is called directly by the timer
+	    //and runs in the same thread as the timer.
+
+	    //We call the method that will work with the UI
+	    //through the runOnUiThread method.
+	    this.runOnUiThread(Timer_Tick);
 	}
 
-	private void setUpTabs() {
-		// setup action bar for tabs
+
+	private Runnable Timer_Tick = new Runnable() {
+	    public void run() {
+
+	    	//This method runs in the same thread as the UI.               
+
+	    	//Do something to the UI thread here
+	    	setUpTabs();
+	    }
+	};
+
+	private void prepareScreen() {
 		ActionBar actionBar = getActionBar();
 
 		// hide actionbar title and icon
@@ -95,6 +135,21 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		actionBar.setDisplayUseLogoEnabled(false);
 		actionBar.setIcon(new ColorDrawable(getResources().getColor(
 				android.R.color.transparent)));
+	}
+	
+	private void setUpTabs() {
+		
+		if (tabs_setup) return; 
+		tabs_setup = true;
+		
+		// setup action bar for tabs
+		ActionBar actionBar = getActionBar();
+
+		// hide actionbar title and icon
+//		actionBar.setDisplayShowTitleEnabled(false);
+//		actionBar.setDisplayUseLogoEnabled(false);
+//		actionBar.setIcon(new ColorDrawable(getResources().getColor(
+//				android.R.color.transparent)));
 
 		// create actionbar tabs
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -136,7 +191,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 								"settings", SettingsFragment.class));
 		actionBar.addTab(settingsTab);
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
@@ -204,7 +259,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		touchAudioDir();
 		
 		recognizedAudioPath = getNewAudioFileName();
-        startTimer(); // TODO Missing output - refresh some label or what..
+        // startTimer(); // TODO Missing output - refresh some label or what..
         
 		try {
 			startActivityForResult(intent, RESPONSECODE);
@@ -216,7 +271,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		}
 	}
 	
-	private static int counter = 0; 
+	private static int messCounter = 0; 
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -235,7 +290,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 					ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 					if (results.isEmpty()) {
 						// Nothing recognized 
-						counter++;
+						messCounter++;
 					}
 					
 					SpeechRecognitionHelper.processTextData(database, results, mDirName);
@@ -250,10 +305,10 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 					// Failed or cancelled 
 					
 					// Nobody talks / wants to talk anymore?
-					counter += 2;
+					messCounter += 2;
 				}
 				
-				if (counter < 2) { // 2 sentences
+				if (messCounter < 2) { // 2 sentences
 					record();
 				}
 				
@@ -352,8 +407,11 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
      */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		System.out.println();
+		
 		if (recording || playing) {
-			importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP, counter);
+			importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP, database.getActualArticleId());
 			Toast.makeText(this, "Important Point Captured", Toast.LENGTH_SHORT).show();
 		} else {
 			// Log.e("CaptureImportantPoint", "Nothing to assign the important point to");
@@ -373,11 +431,26 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	
 
 	public void OnMicroClick(View v) {
+		messCounter = 0; // Reset mess counter
 		record();
 	}
 
 	public void onRecordClicked(View v) {
 		System.out.println();
+	}
+	
+	public void OnPlayButtonClick(MenuItem item) {
+		System.out.println();
+		
+		// TODO Play the last article ? 
+		
+	}
+	
+	public void OnStopButton(MenuItem item) {
+		System.out.println();
+
+		// HIDE KEYBOARD
+		hideKeyboard();
 	}
 	
 	/** 
@@ -407,7 +480,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		startActivityForResult(Intent.createChooser(audioIntent, null), AUDIO_FINISHED_PLAYING);
 	}
 	
-	public void playAudioFragments(ArrayList<File> audioFragmentsPaths) {
+	public void playAudioFragments(List<File> audioFragmentsPaths) {
 		if (audioFragmentsPaths.isEmpty()) {
 			Startscreen.playing = false;
 			return;	
@@ -495,5 +568,18 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		}
 	}
 
+	public void hideKeyboard() {
+		InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); 
+		if (inputManager != null) {
+			IBinder binder = getCurrentFocus().getWindowToken();
+			if (binder != null) {
+				inputManager.hideSoftInputFromWindow(binder, InputMethodManager.HIDE_NOT_ALWAYS);	
+			} else {
+				System.out.println();
+			}
+		} else {
+			System.out.println();
+		}
+	}
 	
 }
