@@ -1,6 +1,9 @@
 package com.example.mija;
 
+import importantpoints.ImportantPointsHandler;
+
 import java.util.ArrayList;
+import java.util.Set;
 
 import parsers.SimpleSentence;
 import android.os.Bundle;
@@ -26,6 +29,13 @@ public class ArticleFragment extends Fragment {
 		
 		LinearLayout rootView = (LinearLayout) inflater.inflate(R.layout.article_tab, container, false);
 		
+		// Important sentences
+		Set<Integer> importantSentenceIds = ImportantPointsHandler.importantSentenceIds; 
+		for (Integer importantSentenceId : importantSentenceIds) {
+			// TODO 
+		}
+		
+		
 		ArrayList<Article> articles = ((Startscreen)getActivity()).getDatabase().getArticles();
 		if (! articles.isEmpty()) { 
 			Article latestArticle = articles.get(articles.size() - 1);
@@ -42,7 +52,7 @@ public class ArticleFragment extends Fragment {
 				sentences.add(ss.toString());
 			} 
 	
-	        StableArrayAdapter adapter = new StableArrayAdapter(getActivity(), R.layout.sentence, sentences);
+	        StableArrayAdapter adapter = new StableArrayAdapter(getActivity(), R.layout.sentence, R.id.sentenceTextViewId, sentences);
 	        
 	        ((Startscreen)getActivity()).listView = (DynamicListView) rootView.findViewById(R.id.dragndroplistview);
 	        ((Startscreen)getActivity()).listView.setCheeseList(sentences);

@@ -408,14 +408,9 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		
-		System.out.println();
-		
-		if (recording || playing) {
-			importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP, database.getActualArticleId());
-			Toast.makeText(this, "Important Point Captured", Toast.LENGTH_SHORT).show();
-		} else {
-			// Log.e("CaptureImportantPoint", "Nothing to assign the important point to");
-		}
+		boolean captured = importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP, database.getActualArticleId());
+		if (captured) Toast.makeText(this, "Important Point Captured", Toast.LENGTH_SHORT).show();
+	
 		return super.onKeyDown(keyCode, event);
 	}
 
