@@ -5,6 +5,7 @@ import importantpoints.ImportantPointsHandler;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -577,10 +578,41 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		}
 	}
 	
+	HashMap<Integer, Integer> redirections = new HashMap<Integer, Integer>();
+	public void swap(int from, int to) {
+		redirect(from, to);
+		// redirect(to, from);
+	}
+	
+	public void redirect(int one, int two) {
+		redirections.put(one, two);
+	}
+	
+	public int findRedirected(int original) {
+		int redirectedKey = original;
+		
+		int search = -1;
+		
+		while (search != redirectedKey) {
+			search = redirectedKey;
+			
+			for (Integer key : redirections.keySet()) {
+				if (redirections.get(key).equals(redirectedKey)) {
+					redirectedKey = key;
+					break;
+				}
+			}
+		}
+		
+		return redirectedKey;
+	}
+	
 	public void playSentence(int position) {
+		int actualposition = findRedirected(position);
+		
 		List<File> audioFragments = FileIterator.getFilesList(database.getArticle(database.getArticles().size() - 1).getPath());
 		if (! audioFragments.isEmpty()) {
-			playAudioIntent(audioFragments.get(position).getAbsolutePath());
+			playAudioIntent(audioFragments.get(actualposition).getAbsolutePath());
 		}
 	}
 	

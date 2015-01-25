@@ -440,6 +440,8 @@ public class DynamicListView extends ListView {
         Object temp = arrayList.get(indexOne);
         arrayList.set(indexOne, arrayList.get(indexTwo));
         arrayList.set(indexTwo, temp);
+        
+        activity.swap(indexOne, indexTwo);
     }
 
 
