@@ -16,17 +16,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mySentenceLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
 
     <TextView
         android:id="@+id/sentenceTextViewId"
-        android:layout_width="match_parent"
+        android:layout_width="259dp"
         android:layout_height="wrap_content"
+        android:layout_weight="0.85"
         android:background="#FFF"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:textColor="#000000"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/editPlaceholder"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:background="@android:color/white"
+        android:text="Edit"
+        android:textColor="@android:color/black"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/playPlaceholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:text="Play"
+        android:textColor="@android:color/black"
         android:textSize="25sp" />
 
 </LinearLayout>
