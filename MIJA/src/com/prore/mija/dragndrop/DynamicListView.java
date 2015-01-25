@@ -303,7 +303,7 @@ public class DynamicListView extends ListView {
                                 ((BaseAdapter) getAdapter()).notifyDataSetChanged();
                             }
                         });
-                    
+                    /*
                     alertDialog.setNeutralButton("Delete",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -317,7 +317,7 @@ public class DynamicListView extends ListView {
                                 ((BaseAdapter) getAdapter()).notifyDataSetChanged();
                             }
                         });
-                    
+                    */
                     alertDialog.setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
