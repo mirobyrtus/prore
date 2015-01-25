@@ -21,9 +21,9 @@
 
     <TextView
         android:id="@+id/sentenceTextViewId"
-        android:layout_width="259dp"
+        android:layout_width="189dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.85"
+        android:layout_weight="2.11"
         android:background="#FFF"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
@@ -33,19 +33,20 @@
 
     <TextView
         android:id="@+id/editPlaceholder"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="30dp"
         android:background="@android:color/white"
-        android:drawableLeft="@drawable/ic_move"
+        android:drawableLeft="@drawable/ic_action_edit"
         android:textColor="@android:color/black"
         android:textSize="25sp" />
 
     <TextView
         android:id="@+id/playPlaceholder"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="30dp"
+        android:layout_weight="0.20"
         android:background="@android:color/white"
-        android:drawableLeft="@drawable/ic_play"
+        android:drawableLeft="@drawable/ic_action_volume_on"
         android:text=""
         android:textColor="@android:color/black"
         android:textSize="25sp" />
