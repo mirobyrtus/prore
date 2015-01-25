@@ -16,12 +16,16 @@
 
 package dragndrop;
 
+import java.util.ArrayList;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -36,9 +40,11 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.example.mija.Startscreen;
 
 /**
  * The dynamic listview is an extension of listview that supports cell dragging
@@ -95,6 +101,11 @@ public class DynamicListView extends ListView {
     private boolean mIsWaitingForScrollFinish = false;
     private int mScrollState = OnScrollListener.SCROLL_STATE_IDLE;
 
+    Startscreen activity; 
+    public void setActivity(Startscreen a) {
+    	activity = a;
+    }
+    
     public DynamicListView(Context context) {
         super(context);
         init(context);
@@ -243,6 +254,8 @@ public class DynamicListView extends ListView {
         }
     }
 
+    public static int lastPosition;
+    
     @Override
     public boolean onTouchEvent (MotionEvent event) {
 
@@ -250,6 +263,59 @@ public class DynamicListView extends ListView {
             case MotionEvent.ACTION_DOWN:
                 mDownX = (int)event.getX();
                 mDownY = (int)event.getY();
+                
+                if (mDownX > 600) {
+                	int position = pointToPosition(mDownX, mDownY);
+                    int itemNum = position - getFirstVisiblePosition();
+                    
+                    activity.playSentence(itemNum);
+
+                } else if (mDownX > 500) {
+                	int position = pointToPosition(mDownX, mDownY);
+                    int itemNum = position - getFirstVisiblePosition();
+                	
+                    lastPosition = itemNum;
+                    
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+                    alertDialog.setTitle("Set Title");
+                    
+                    final EditText input = new EditText(activity);
+                    input.setText(mCheeseList.get(lastPosition));
+                    
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                    input.setLayoutParams(lp);
+                    alertDialog.setView(input);
+
+                    alertDialog.setPositiveButton("YES",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                String newTitle = input.getText().toString();
+                                String oldTitle = mCheeseList.get(lastPosition);
+                                
+                                // Change data
+                                mCheeseList.set(lastPosition, newTitle);
+                                ((StableArrayAdapter) getAdapter()).mIdMap.remove(oldTitle);
+                                ((StableArrayAdapter) getAdapter()).mIdMap.put(newTitle, lastPosition);
+                                
+                                // notifyData
+                                ((BaseAdapter) getAdapter()).notifyDataSetChanged();
+                            }
+                        });
+
+                    alertDialog.setNegativeButton("NO",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                    alertDialog.show();
+
+                }
+                
+                
                 mActivePointerId = event.getPointerId(0);
                 break;
             case MotionEvent.ACTION_MOVE:

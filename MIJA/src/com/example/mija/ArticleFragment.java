@@ -58,6 +58,7 @@ public class ArticleFragment extends Fragment {
 	        ((Startscreen)getActivity()).listView.setCheeseList(sentences);
 	        ((Startscreen)getActivity()).listView.setAdapter(adapter);
 	        ((Startscreen)getActivity()).listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+	        ((Startscreen)getActivity()).listView.setActivity((Startscreen)getActivity());
 		}
 
 		/**

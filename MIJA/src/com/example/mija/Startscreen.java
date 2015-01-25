@@ -577,4 +577,11 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 		}
 	}
 	
+	public void playSentence(int position) {
+		List<File> audioFragments = FileIterator.getFilesList(database.getArticle(database.getArticles().size() - 1).getPath());
+		if (! audioFragments.isEmpty()) {
+			playAudioIntent(audioFragments.get(position).getAbsolutePath());
+		}
+	}
+	
 }
