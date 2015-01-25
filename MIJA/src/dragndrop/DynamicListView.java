@@ -444,6 +444,30 @@ public class DynamicListView extends ListView {
         activity.swap(indexOne, indexTwo);
     }
 
+    public void removeLastItem() {
+        
+    	int lastIndex = mCheeseList.size() - 1;
+    	String lastSentence = mCheeseList.get(lastIndex); 
+    	
+        ((StableArrayAdapter) getAdapter()).mIdMap.remove(lastSentence);
+        
+        mCheeseList.remove(lastIndex);
+        
+        // notifyData
+        ((BaseAdapter) getAdapter()).notifyDataSetChanged();
+    }
+    
+    public void appendEmptyItem() {
+        
+    	int lastIndex = mCheeseList.size() - 1;
+    	
+    	mCheeseList.add(""); 
+    	
+        ((StableArrayAdapter) getAdapter()).mIdMap.put("", lastIndex + 1);
+        
+        // notifyData
+        ((BaseAdapter) getAdapter()).notifyDataSetChanged();
+    }
 
     /**
      * Resets all the appropriate fields to a default state while also animating

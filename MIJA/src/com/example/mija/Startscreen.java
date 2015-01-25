@@ -408,6 +408,10 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
      */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	
+		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_ENTER) {
+			System.out.println();
+		}
 		
 		boolean captured = importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP, database.getActualArticleId());
 		if (captured) Toast.makeText(this, "Important Point Captured", Toast.LENGTH_SHORT).show();
@@ -514,22 +518,11 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	DynamicListView listView;
 
 	public void RemoveSentence(View v) {
-		
-		/*
-		listView.mCheeseList.remove(0);
-		listView.getAdapter().notifyAll();
-		listView.notifyAll();
-		listView.refreshDrawableState();
-		*/
-		
-		Toast.makeText(this, "TODO Remove First article", Toast.LENGTH_SHORT).show();
-		
+		listView.removeLastItem();
 	}
 	
 	public void AddNewSentence(View v) {
-		
-		Toast.makeText(this, "TODO Add new Sentence", Toast.LENGTH_SHORT).show();
-		
+		listView.appendEmptyItem();
 	}
 	
 	public void OnShareViaEmail(View v) {
@@ -615,5 +608,5 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 			playAudioIntent(audioFragments.get(actualposition).getAbsolutePath());
 		}
 	}
-	
+
 }
