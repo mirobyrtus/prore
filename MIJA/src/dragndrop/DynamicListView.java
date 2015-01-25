@@ -288,7 +288,7 @@ public class DynamicListView extends ListView {
                     input.setLayoutParams(lp);
                     alertDialog.setView(input);
 
-                    alertDialog.setPositiveButton("YES",
+                    alertDialog.setPositiveButton("Save",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 String newTitle = input.getText().toString();
@@ -303,14 +303,28 @@ public class DynamicListView extends ListView {
                                 ((BaseAdapter) getAdapter()).notifyDataSetChanged();
                             }
                         });
-
-                    alertDialog.setNegativeButton("NO",
+                    
+                    alertDialog.setNeutralButton("Delete",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                String oldTitle = mCheeseList.get(lastPosition);
+                                
+                                // Change data
+                                mCheeseList.remove(lastPosition);
+                                ((StableArrayAdapter) getAdapter()).mIdMap.remove(oldTitle);
+                                
+                                // notifyData
+                                ((BaseAdapter) getAdapter()).notifyDataSetChanged();
+                            }
+                        });
+                    
+                    alertDialog.setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
                         });
-
+					
                     alertDialog.show();
 
                 }
