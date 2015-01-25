@@ -34,18 +34,19 @@
     <TextView
         android:id="@+id/editPlaceholder"
         android:layout_width="wrap_content"
-        android:layout_height="29dp"
+        android:layout_height="30dp"
         android:background="@android:color/white"
-        android:text="Edit"
+        android:drawableLeft="@drawable/ic_move"
         android:textColor="@android:color/black"
         android:textSize="25sp" />
 
     <TextView
         android:id="@+id/playPlaceholder"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:background="@android:color/white"
-        android:text="Play"
+        android:drawableLeft="@drawable/ic_play"
+        android:text=""
         android:textColor="@android:color/black"
         android:textSize="25sp" />
 
