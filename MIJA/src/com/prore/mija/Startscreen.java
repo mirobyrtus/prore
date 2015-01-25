@@ -541,8 +541,8 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
 		for (int i = 0; i < dndview.getChildCount(); i++) {
 		    View view = dndview.getChildAt(i);
 		    
-		    if (view instanceof TextView) {
-		    	TextView textView = (TextView) view;
+		    if (view instanceof LinearLayout) {
+		    	TextView textView = ((TextView)((LinearLayout) view).getChildAt(0));
 		    	String sentence = textView.getText().toString().trim();
     			article.append(sentence + ". \n");
 		    }
