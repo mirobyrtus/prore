@@ -276,57 +276,58 @@ public class DynamicListView extends ListView {
                 	
                     lastPosition = itemNum;
                     
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-                    alertDialog.setTitle("Edit Sentence");
-                    
-                    final EditText input = new EditText(activity);
-                    input.setText(mCheeseList.get(lastPosition));
-                    
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT);
-                    input.setLayoutParams(lp);
-                    alertDialog.setView(input);
-
-                    alertDialog.setPositiveButton("Save",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                String newSentence = input.getText().toString();
-                                String oldSentence = mCheeseList.get(lastPosition);
-                                
-                                // Change data
-                                mCheeseList.set(lastPosition, newSentence);
-                                ((StableArrayAdapter) getAdapter()).mIdMap.remove(oldSentence);
-                                ((StableArrayAdapter) getAdapter()).mIdMap.put(newSentence, lastPosition);
-                                
-                                // notifyData
-                                ((BaseAdapter) getAdapter()).notifyDataSetChanged();
-                            }
-                        });
-                    /*
-                    alertDialog.setNeutralButton("Delete",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                String oldSentence = mCheeseList.get(lastPosition);
-                                
-                                // Change data
-                                mCheeseList.remove(lastPosition);
-                                ((StableArrayAdapter) getAdapter()).mIdMap.remove(oldSentence);
-                                
-                                // notifyData
-                                ((BaseAdapter) getAdapter()).notifyDataSetChanged();
-                            }
-                        });
-                    */
-                    alertDialog.setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-					
-                    alertDialog.show();
-
+                    if (lastPosition >= 0) {
+	                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+	                    alertDialog.setTitle("Edit Sentence");
+	                    
+	                    final EditText input = new EditText(activity);
+	                    input.setText(mCheeseList.get(lastPosition));
+	                    
+	                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+	                        LinearLayout.LayoutParams.MATCH_PARENT,
+	                        LinearLayout.LayoutParams.MATCH_PARENT);
+	                    input.setLayoutParams(lp);
+	                    alertDialog.setView(input);
+	
+	                    alertDialog.setPositiveButton("Save",
+	                        new DialogInterface.OnClickListener() {
+	                            public void onClick(DialogInterface dialog, int which) {
+	                                String newSentence = input.getText().toString();
+	                                String oldSentence = mCheeseList.get(lastPosition);
+	                                
+	                                // Change data
+	                                mCheeseList.set(lastPosition, newSentence);
+	                                ((StableArrayAdapter) getAdapter()).mIdMap.remove(oldSentence);
+	                                ((StableArrayAdapter) getAdapter()).mIdMap.put(newSentence, lastPosition);
+	                                
+	                                // notifyData
+	                                ((BaseAdapter) getAdapter()).notifyDataSetChanged();
+	                            }
+	                        });
+	                    /*
+	                    alertDialog.setNeutralButton("Delete",
+	                        new DialogInterface.OnClickListener() {
+	                            public void onClick(DialogInterface dialog, int which) {
+	                                String oldSentence = mCheeseList.get(lastPosition);
+	                                
+	                                // Change data
+	                                mCheeseList.remove(lastPosition);
+	                                ((StableArrayAdapter) getAdapter()).mIdMap.remove(oldSentence);
+	                                
+	                                // notifyData
+	                                ((BaseAdapter) getAdapter()).notifyDataSetChanged();
+	                            }
+	                        });
+	                    */
+	                    alertDialog.setNegativeButton("Cancel",
+	                        new DialogInterface.OnClickListener() {
+	                            public void onClick(DialogInterface dialog, int which) {
+	                                dialog.cancel();
+	                            }
+	                        });
+						
+	                    alertDialog.show();
+                    }
                 }
                 
                 

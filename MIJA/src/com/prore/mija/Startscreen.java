@@ -15,6 +15,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
@@ -45,11 +46,10 @@ import com.prore.mija.database.Database;
 import com.prore.mija.database.DatabaseSerializer;
 import com.prore.mija.dragndrop.DynamicListView;
 import com.prore.mija.filehelper.FileIterator;
-import com.prore.mija.importantpoints.ImportantPointsHandler;
 import com.prore.mija.speechrecognition.SpeechRecognitionHelper;
 import com.prore.mija.timers.TimerUtils;
 
-public class Startscreen extends FragmentActivity implements OnClickListener, OnKeyListener {
+public class Startscreen extends FragmentActivity implements OnClickListener {
 
 	/** Called when the activity is first created. */
 
@@ -64,10 +64,11 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
 	private String mDirName = null;
 	public final static String mAudioSubdir = "mija_audio";
 	
-	// Important Points
-	ImportantPointsHandler importantPointsHandler = new ImportantPointsHandler();
-	long start_IP = 0;
-	String recording_IP = null;
+	// --- Important Points handled directly in the Database
+	// Important Points 
+	// ImportantPointsHandler importantPointsHandler = new ImportantPointsHandler();
+	// long start_IP = 0;
+	// String recording_IP = null;
 	
 	// Sentences & Parsers
 	// private ArrayAdapter<String> _arrayAdapter;
@@ -107,7 +108,9 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
 		
 		database = DatabaseSerializer.loadDatabase(this);
 		
-		// record();
+		// Will be overwritten by GoogleIntent!
+		// setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 	}
 	
 	private void TimerMethod()
@@ -246,30 +249,55 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
 		return mDirName + "/record_" + files.length + ".amr";
 	}
 	
-	private String getLatestAudioFileName() {
+	private String getFirstAudioFileName() {
 		File files[] = FileIterator.getFilesArray(mDirName);
 		if (files == null || files.length == 0) {
 			return null; 
 		}
-		return files[files.length - 1].getAbsolutePath();
+		return files[0].getAbsolutePath();
 	}
 
 	private final int RESPONSECODE = 100;
 	private String recognizedAudioPath;
 	
+	// AudioManagement
+	AudioManager audio;
+	private int DEFAULT_AUDIO_SILENT = 0;
+	private int DEFAULT_AUDIO_VIBRATE = 1;
+	private int DEFAULT_AUDIO_VOLUME = DEFAULT_AUDIO_VIBRATE;
+	
+	public int getActualStreamVolume() {
+		int volume = audio.getStreamVolume(AudioManager.STREAM_RING);
+		if (! (volume == 0 && audio.getRingerMode() != AudioManager.RINGER_MODE_VIBRATE)) {
+			volume++; // Shift all the volumes so that Vibrating has its own value
+		}
+		return volume;
+	}
+	
+	public void muteApp() {
+		// setVolumeControlStream(AudioManager.STREAM_RING); // - this is not taking the AudioFocus!
+		if (DEFAULT_AUDIO_VOLUME == 0) {
+			audio.setRingerMode(AudioManager.RINGER_MODE_SILENT);	
+		} else if (DEFAULT_AUDIO_VOLUME == 1) {
+			audio.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+		}
+	}
+	
 	public void startRecognizingAndRecording() {
+		muteApp();
+		
 		Intent intent = SpeechRecognitionHelper.prepareIntent();
 		
 		touchAudioDir();
 		
 		recognizedAudioPath = getNewAudioFileName();
         // startTimer(); // TODO Missing output - refresh some label or what..
-        
+		
 		try {
 			startActivityForResult(intent, RESPONSECODE);
 			recording = true; 
-			start_IP = SystemClock.uptimeMillis();
-			recording_IP = recognizedAudioPath;
+//			start_IP = SystemClock.uptimeMillis();
+//			recording_IP = recognizedAudioPath;
 		} catch (ActivityNotFoundException a) {
 			Log.e("SpeechRecognition", "Speech Recognition not availible on this device.");
 		}
@@ -297,16 +325,22 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
 						messCounter++;
 					}
 					
-					SpeechRecognitionHelper.processTextData(database, results, mDirName);
+					int newVolume = getActualStreamVolume();
+					boolean importantSentence = (newVolume > DEFAULT_AUDIO_VOLUME ? true : false);
+					
+					SpeechRecognitionHelper.processTextData(database, results, mDirName, importantSentence);
 					
 					// Save Database
 					DatabaseSerializer.saveDatabase(this, database);
 					
 					// Process AUDIO data
 					SpeechRecognitionHelper.saveAudioData(data, getContentResolver(), recognizedAudioPath);
+				
+					muteApp();
 					
 				} else if (resultCode == 0) {
 					// Failed or cancelled 
+					muteApp();
 					
 					// Nobody talks / wants to talk anymore?
 					messCounter += 2;
@@ -324,6 +358,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
 	
 	public void record() {
 		if (! recording) {
+			messCounter = 0; // Reset mess counter
 			startRecognizingAndRecording();
         } else {
         	Log.e("AudioRecording", "Already recording!");
@@ -379,15 +414,16 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
             }
         });
         
-        String lastAudioName = getLatestAudioFileName();
+        String firstAudioName = getFirstAudioFileName();
         try {
-        	if (lastAudioName != null) {
-	            mPlayer.setDataSource(lastAudioName);
+        	if (firstAudioName != null) {
+	            mPlayer.setDataSource(firstAudioName);
 	            mPlayer.prepare(); // PrepareAsync?
 	            mPlayer.start();
 	            TimerUtils.startCountDown(mPlayer.getDuration());
         	} else {
         		Log.e("AudioRecording", "Nothing to play!");
+        		Toast.makeText(this, "Nothing recorded to play!", Toast.LENGTH_SHORT).show();
         		return;
         	}
         } catch (IOException e) {
@@ -395,8 +431,8 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
         }
         
         playing = true;
-        start_IP = SystemClock.uptimeMillis();
-		recording_IP = lastAudioName;
+//      start_IP = SystemClock.uptimeMillis();
+//		recording_IP = lastAudioName;
     }
 
     private void stopPlaying() {
@@ -406,21 +442,24 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
         playing = false; 
     }
     
-    /**
-     * Important Points Handler
-     */
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	
-		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_ENTER) {
-			System.out.println();
-		}
-		
-		boolean captured = importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP, database.getActualArticleId());
-		if (captured) Toast.makeText(this, "Important Point Captured", Toast.LENGTH_SHORT).show();
-	
-		return super.onKeyDown(keyCode, event);
-	}
+//    /**
+//     * Important Points Handler - Important Points handled directly in the Database!
+//     */
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//	
+//		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_ENTER) {
+//			
+//			// TODO MUTE! 
+//			
+//			System.out.println();
+//		}
+//		
+//		boolean captured = importantPointsHandler.clicked(keyCode, event, SystemClock.uptimeMillis() - start_IP, recording_IP, database.getActualArticleId());
+//		if (captured) Toast.makeText(this, "Important Point Captured", Toast.LENGTH_SHORT).show();
+//	
+//		return super.onKeyDown(keyCode, event);
+//	}
 
 	@Override
 	public void onClick(View v) {
@@ -429,29 +468,23 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
 	}
 	
 	public void DeleteBrick(View v) {
+		// TODO Auto-generated method stub
 		System.out.println();
 	}
-	
 
 	public void OnMicroClick(View v) {
-		messCounter = 0; // Reset mess counter
 		record();
 	}
 
 	public void onRecordClicked(View v) {
-		System.out.println();
+		record();
 	}
 	
 	public void OnPlayButtonClick(MenuItem item) {
-		System.out.println();
-		
-		// TODO Play the last article ? 
-		
+		startPlaying(); 
 	}
 	
 	public void OnStopButton(MenuItem item) {
-		System.out.println();
-
 		// HIDE KEYBOARD
 		hideKeyboard();
 	}
@@ -563,11 +596,14 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
 	public void hideKeyboard() {
 		InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); 
 		if (inputManager != null) {
-			IBinder binder = getCurrentFocus().getWindowToken();
-			if (binder != null) {
-				inputManager.hideSoftInputFromWindow(binder, InputMethodManager.HIDE_NOT_ALWAYS);	
-			} else {
-				System.out.println();
+			View currentFocus = getCurrentFocus();
+				if (currentFocus != null) {
+				IBinder binder = currentFocus.getWindowToken();
+				if (binder != null) {
+					inputManager.hideSoftInputFromWindow(binder, InputMethodManager.HIDE_NOT_ALWAYS);	
+				} else {
+					System.out.println();
+				}
 			}
 		} else {
 			System.out.println();
@@ -605,21 +641,13 @@ public class Startscreen extends FragmentActivity implements OnClickListener, On
 	
 	public void playSentence(int position) {
 		int actualposition = findRedirected(position);
-		
-		List<File> audioFragments = FileIterator.getFilesList(database.getArticle(database.getArticles().size() - 1).getPath());
-		if (! audioFragments.isEmpty()) {
-			playAudioIntent(audioFragments.get(actualposition).getAbsolutePath());
+		if (actualposition >= 0) {
+			List<File> audioFragments = FileIterator.getFilesList(database.getArticle(database.getArticles().size() - 1).getPath());
+			if (! audioFragments.isEmpty()) {
+				int importantId = database.getLastArticle().filterImportantId(actualposition);
+				playAudioIntent(audioFragments.get(importantId).getAbsolutePath());
+			}			
 		}
-	}
-
-	@Override
-	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		
-		// TODO Implement this
-		
-		System.out.println();
-		
-		return false;
 	}
 
 }

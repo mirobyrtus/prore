@@ -22,7 +22,7 @@
     <TextView
         android:id="@+id/sentenceTextViewId"
         android:layout_width="189dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_weight="2.11"
         android:background="#FFF"
         android:gravity="center_vertical"
@@ -34,7 +34,7 @@
     <TextView
         android:id="@+id/editPlaceholder"
         android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_height="match_parent"
         android:background="@android:color/white"
         android:drawableLeft="@drawable/ic_action_edit"
         android:textColor="@android:color/black"
@@ -43,7 +43,7 @@
     <TextView
         android:id="@+id/playPlaceholder"
         android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_height="match_parent"
         android:layout_weight="0.20"
         android:background="@android:color/white"
         android:drawableLeft="@drawable/ic_action_volume_on"

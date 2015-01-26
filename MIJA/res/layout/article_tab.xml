@@ -62,7 +62,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
-            android:text="Article Title Here"
+            android:text="Article-List empty"
             android:textColor="@android:color/black"
             android:textSize="30sp" />
 

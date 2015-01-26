@@ -22,25 +22,33 @@ public class Database implements Serializable {
 		return newArticle; 
 	}
 	
-	public void addSentenceToArticle(String articlePath, ArrayList<String> alternativeSentences) {
-		Article article = null; 
-		for (Article a : articles) {
-			if (a.getPath().equals(articlePath)) {
-				article = a; 
-				break;
-			}
-		}
+	public void addSentenceToArticle(String articlePath, ArrayList<String> alternativeSentences, boolean importantSentence) {
+		Article article = getArticle(articlePath);
 		
 		if (article == null) {
 			article = createNewArticle(articlePath);
 		}
 		
-		article.addNewSentence(alternativeSentences);	
+		article.addNewSentence(alternativeSentences, importantSentence);	
+	}
+	
+	public Article getArticle(String articlePath) {
+		for (Article article : articles) {
+			if (article.getPath().equals(articlePath)) {
+				return article;
+			}
+		}
+		return null;
 	}
 	
 	public Article getArticle(int id) {
 		if (id >= articles.size()) return null;
 		return articles.get(id);
+	}
+	
+	public Article getLastArticle() {
+		if (articles.isEmpty()) return null;
+		return articles.get(articles.size() - 1);
 	}
 	
 	public int getActualArticleId() {

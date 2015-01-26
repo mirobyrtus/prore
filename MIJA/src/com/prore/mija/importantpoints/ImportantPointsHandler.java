@@ -13,8 +13,17 @@ public class ImportantPointsHandler {
 	// File -> importantPoints
 	private static HashMap<String, ArrayList<Long>> importantPoints = new HashMap<String, ArrayList<Long>>();
 	// TODO
-	public static Set<Integer> importantSentenceIds = new HashSet<Integer>();
+	public static ArrayList<Integer> importantSentenceIds = new ArrayList<Integer>();
 
+	public boolean importantSentence(String articlePath, int sentenceId) {
+		// TODO use articlePath also!
+		if (! importantSentenceIds.contains(sentenceId)) {
+			importantSentenceIds.add(sentenceId);
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean clicked(int keyCode, KeyEvent event, long millis,
 			String audioPath, int sentenceId) { // Context context - Send from
 												// Activity if u need

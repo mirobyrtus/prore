@@ -2,7 +2,6 @@ package com.prore.mija;
 
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,6 @@ import com.example.mija.R;
 import com.prore.mija.database.Article;
 import com.prore.mija.dragndrop.DynamicListView;
 import com.prore.mija.dragndrop.StableArrayAdapter;
-import com.prore.mija.importantpoints.ImportantPointsHandler;
 import com.prore.mija.parsers.SimpleSentence;
 
 public class ArticleFragment extends Fragment {
@@ -30,13 +28,6 @@ public class ArticleFragment extends Fragment {
 		//		.inflate(R.layout.article_tab, container, false);
 		
 		LinearLayout rootView = (LinearLayout) inflater.inflate(R.layout.article_tab, container, false);
-		
-		// Important sentences
-		Set<Integer> importantSentenceIds = ImportantPointsHandler.importantSentenceIds; 
-		for (Integer importantSentenceId : importantSentenceIds) {
-			// TODO 
-		}
-		
 		
 		ArrayList<Article> articles = ((Startscreen)getActivity()).getDatabase().getArticles();
 		if (! articles.isEmpty()) { 
@@ -51,7 +42,10 @@ public class ArticleFragment extends Fragment {
 			// DragNDrop
 			ArrayList<String> sentences = new ArrayList<String>(); 
 			for (SimpleSentence ss : simpleSentences) {
-				sentences.add(ss.toString());
+				// Filter only important sentences
+				if (ss.isImportant()) {
+					sentences.add(ss.toString());	
+				}
 			} 
 	
 	        StableArrayAdapter adapter = new StableArrayAdapter(getActivity(), R.layout.sentence, R.id.sentenceTextViewId, sentences);

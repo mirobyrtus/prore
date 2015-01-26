@@ -29,6 +29,8 @@ public class SpeechRecognitionHelper {
 		// intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.GERMANY);
 		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, Locale.GERMAN);
 
+		// intent.putExtra("android.media.EXTRA_VOLUME_STREAM_VALUE", true);
+		
 		// Hidden Google Features
 		intent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
 		intent.putExtra("android.speech.extra.GET_AUDIO", true);
@@ -40,9 +42,9 @@ public class SpeechRecognitionHelper {
 
 	}
 	
-	public static void processTextData(Database database, ArrayList<String> results, String articlePath) {
+	public static void processTextData(Database database, ArrayList<String> results, String articlePath, boolean importantSentence) {
 		if (results != null && results.size() > 0) {
-        	database.addSentenceToArticle(articlePath, results);
+        	database.addSentenceToArticle(articlePath, results, importantSentence);
         } else {
         	Log.e("SpeechRecognition", "Nothing was recognized!");
         }
