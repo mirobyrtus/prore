@@ -264,7 +264,7 @@ public class Startscreen extends FragmentActivity implements OnClickListener {
 	AudioManager audio;
 	private int DEFAULT_AUDIO_SILENT = 0;
 	private int DEFAULT_AUDIO_VIBRATE = 1;
-	private int DEFAULT_AUDIO_VOLUME = DEFAULT_AUDIO_VIBRATE;
+	private int DEFAULT_AUDIO_VOLUME = DEFAULT_AUDIO_SILENT;
 	
 	public int getActualStreamVolume() {
 		int volume = audio.getStreamVolume(AudioManager.STREAM_RING);
